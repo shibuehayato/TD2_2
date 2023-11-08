@@ -76,6 +76,18 @@
     <Filter Include="ソース ファイル\camera">
       <UniqueIdentifier>{ec8bd9c9-a993-4d9e-bcc4-200332db3bd2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Tower">
+      <UniqueIdentifier>{5516c085-1cdd-4bf3-8384-521ad426e30b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Tower">
+      <UniqueIdentifier>{8cdc7b72-d86e-4d1c-a187-ce35a82cfed6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\OverheadCamera">
+      <UniqueIdentifier>{3ce9ed0a-0d58-4b6b-8645-b0cb235e5151}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\OverheadCamera">
+      <UniqueIdentifier>{fd325eeb-3f81-4784-9cad-1ccbc8fdd5a7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -110,6 +122,12 @@
     </ClCompile>
     <ClCompile Include="camera\FollowCamera.cpp">
       <Filter>ソース ファイル\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Tower.cpp">
+      <Filter>ソース ファイル\Tower</Filter>
+    </ClCompile>
+    <ClCompile Include="OverheadCamera.cpp">
+      <Filter>ソース ファイル\OverheadCamera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -211,6 +229,12 @@
     </ClInclude>
     <ClInclude Include="camera\FollowCamera.h">
       <Filter>ヘッダー ファイル\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Tower.h">
+      <Filter>ヘッダー ファイル\Tower</Filter>
+    </ClInclude>
+    <ClInclude Include="OverheadCamera.h">
+      <Filter>ヘッダー ファイル\OverheadCamera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

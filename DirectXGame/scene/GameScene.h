@@ -15,6 +15,7 @@
 #include "DebugCamera.h"
 #include "WorldTransform.h"
 #include "FollowCamera.h"
+#include"Tower.h"
 
 /// <summary>
 /// ゲームシーン
@@ -89,6 +90,9 @@ private: // メンバ変数
 
 	// 追従カメラ
 	std::unique_ptr<FollowCamera> followCamera_;
+	//タワーの生成
+	std::unique_ptr<Tower> tower_;
+	std::unique_ptr<Model> modeltower_;
 
 	/// <summary>
 	/// ゲームシーン用

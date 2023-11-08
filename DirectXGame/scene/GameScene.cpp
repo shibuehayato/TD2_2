@@ -50,6 +50,13 @@ void GameScene::Initialize() {
 	// 地面の初期化
 	ground_->Initialize(modelGround_.get());
 
+	// タワーの生成
+	tower_ = std::make_unique<Tower>();
+	// タワーの3Dモデルの生成
+	modeltower_.reset(Model::CreateFromOBJ("tower", true));
+	// タワーの初期化
+	tower_->Initialize(modeltower_.get());
+
 	// デバッグカメラの生成
 	debugCamera_ = std::make_unique<DebugCamera>(2000, 2000);
 
@@ -57,7 +64,7 @@ void GameScene::Initialize() {
 	followCamera_ = std::make_unique<FollowCamera>();
 	followCamera_->Initialize();
 
-		// 自キャラに追従カメラのビュープロジェクションをアドレス渡しする
+	// 自キャラに追従カメラのビュープロジェクションをアドレス渡しする
 	player_->SetViewProjection(&followCamera_->GetViewProjection());
 
 	// 自キャラのワールドトランスフォームを追従カメラにセット
@@ -67,6 +74,10 @@ void GameScene::Initialize() {
 	AxisIndicator::GetInstance()->SetVisible(true);
 	// 軸方向表示が参照するビュープロジェクションを指定する (アドレス渡し)
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
+
+	
+
+	
 
 }
 
@@ -83,6 +94,12 @@ void GameScene::Update() {
 
 	// デバッグカメラの更新
 	debugCamera_->Update();
+
+	//タワーの更新
+	tower_->Update();
+
+	
+
 
 #ifdef _DEBUG
 	if (input_->TriggerKey(DIK_RETURN)) {
@@ -141,6 +158,9 @@ void GameScene::Draw() {
 
 	// 地面の描画
 	ground_->Draw(viewProjection_);
+
+	//タワーの描画
+	tower_->Draw(viewProjection_);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
