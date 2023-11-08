@@ -2,14 +2,15 @@
 #include "Model.h"
 #include "WorldTransform.h"
 #include "Input.h"
+#include "BaseCharacter.h"
 
-class Player {
+class Player : public BaseCharacter{
 public:
-	void Initialize(Model* head, Model* body, Model* L_arm, Model* R_arm);
+	void Initialize(const std::vector<Model*>& models) override;
 
-	void Update();
+	void Update() override;
 
-	void Draw(ViewProjection viewProjection);
+	void Draw(const ViewProjection& viewProjection) override;
 
 	const WorldTransform& GetWorldTransform() { return worldTransformBody_; }
 
@@ -29,11 +30,6 @@ private:
 	WorldTransform worldTransformBody_;
 	WorldTransform worldTransformL_arm_;
 	WorldTransform worldTransformR_arm_;
-	// モデル
-	Model* modelFighterHead_ = nullptr;
-	Model* modelFighterBody_ = nullptr;
-	Model* modelFighterL_arm_ = nullptr;
-	Model* modelFighterR_arm_ = nullptr;
 
 	// キーボード入力
 	Input* input_ = nullptr;
