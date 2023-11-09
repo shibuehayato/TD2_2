@@ -16,6 +16,15 @@ void Enemy::Initialize(const std::vector<Model*>& models)
 
 void Enemy::Update() 
 { 
+
+	// 敵の速度
+	float EnemySpeed = 0.5f;
+	Vector3 velocity(0, 0, EnemySpeed);
+
+	worldTransformBody_.translation_.z += EnemySpeed;
+	worldTransformL_arm_.translation_.z += EnemySpeed;
+	worldTransformR_arm_.translation_.z += EnemySpeed;
+
 	worldTransformBody_.UpdateMatrix();
 	worldTransformL_arm_.UpdateMatrix();
 	worldTransformR_arm_.UpdateMatrix();

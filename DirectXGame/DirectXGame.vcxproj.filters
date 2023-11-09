@@ -76,6 +76,18 @@
     <Filter Include="ソース ファイル\camera">
       <UniqueIdentifier>{ec8bd9c9-a993-4d9e-bcc4-200332db3bd2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\enemy">
+      <UniqueIdentifier>{a4d1d3e8-87b0-41d5-a7c5-953b86e86555}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\enemy">
+      <UniqueIdentifier>{4200f000-fae0-4d2e-be09-f820676c630b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\baseCharacter">
+      <UniqueIdentifier>{4ee85ab6-6350-40e2-8088-9210477beff9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\baseCharacter">
+      <UniqueIdentifier>{70f657bb-5360-412f-9796-142e89ad64bb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -111,11 +123,11 @@
     <ClCompile Include="camera\FollowCamera.cpp">
       <Filter>ソース ファイル\camera</Filter>
     </ClCompile>
-    <ClCompile Include="BaseCharacter.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="enemy\Enemy.cpp">
+      <Filter>ソース ファイル\enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="BaseCharacter\BaseCharacter.cpp">
+      <Filter>ソース ファイル\baseCharacter</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -218,11 +230,11 @@
     <ClInclude Include="camera\FollowCamera.h">
       <Filter>ヘッダー ファイル\camera</Filter>
     </ClInclude>
-    <ClInclude Include="BaseCharacter.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="enemy\Enemy.h">
+      <Filter>ヘッダー ファイル\enemy</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="BaseCharacter\BaseCharacter.h">
+      <Filter>ヘッダー ファイル\baseCharacter</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
