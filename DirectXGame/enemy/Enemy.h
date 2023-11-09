@@ -22,7 +22,6 @@ private:
 	WorldTransform worldTransformBody_;
 	WorldTransform worldTransformL_arm_;
 	WorldTransform worldTransformR_arm_;
-
 	// タワー
 	Tower* tower_ = nullptr;
 };
