@@ -16,6 +16,9 @@
 #include "WorldTransform.h"
 #include "FollowCamera.h"
 #include"Tower.h"
+#include"OverheadCamera.h"
+#include"ImGuiManager.h"
+
 
 /// <summary>
 /// ゲームシーン
@@ -93,6 +96,15 @@ private: // メンバ変数
 	//タワーの生成
 	std::unique_ptr<Tower> tower_;
 	std::unique_ptr<Model> modeltower_;
+
+	std::unique_ptr<OverheadCamera> overheadCamera_;
+	bool isOverheadCameraActive_ = false;
+
+	int32_t cameracooltime_;
+	bool cameracooltimeActive_ = false;
+
+	// ゲームパッドの状態を得る変数
+	XINPUT_STATE joyState;
 
 	/// <summary>
 	/// ゲームシーン用

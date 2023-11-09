@@ -21,6 +21,7 @@ void FollowCamera::Update() {
 
 		// 座標をコピーしてオフセット分ずらす
 		viewProjection_.translation_ = Add(target_->translation_, offset);
+
 	}
 
 	// ゲームパッドの状態を得る変数
