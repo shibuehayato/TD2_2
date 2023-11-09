@@ -72,6 +72,9 @@ void GameScene::Initialize() {
 	// タワーの初期化
 	tower_->Initialize(modeltower_.get());
 
+	// 敵キャラにタワーのアドレスを渡す
+	enemy_->SetTower(tower_.get());
+
 	// デバッグカメラの生成
 	debugCamera_ = std::make_unique<DebugCamera>(2000, 2000);
 
