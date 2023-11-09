@@ -88,6 +88,18 @@
     <Filter Include="ソース ファイル\OverheadCamera">
       <UniqueIdentifier>{fd325eeb-3f81-4784-9cad-1ccbc8fdd5a7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\enemy">
+      <UniqueIdentifier>{a4d1d3e8-87b0-41d5-a7c5-953b86e86555}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\enemy">
+      <UniqueIdentifier>{4200f000-fae0-4d2e-be09-f820676c630b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\baseCharacter">
+      <UniqueIdentifier>{4ee85ab6-6350-40e2-8088-9210477beff9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\baseCharacter">
+      <UniqueIdentifier>{70f657bb-5360-412f-9796-142e89ad64bb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -122,6 +134,12 @@
     </ClCompile>
     <ClCompile Include="camera\FollowCamera.cpp">
       <Filter>ソース ファイル\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="enemy\Enemy.cpp">
+      <Filter>ソース ファイル\enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseCharacter\BaseCharacter.cpp">
+      <Filter>ソース ファイル\baseCharacter</Filter>
     </ClCompile>
     <ClCompile Include="Tower.cpp">
       <Filter>ソース ファイル\Tower</Filter>
@@ -229,6 +247,12 @@
     </ClInclude>
     <ClInclude Include="camera\FollowCamera.h">
       <Filter>ヘッダー ファイル\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="enemy\Enemy.h">
+      <Filter>ヘッダー ファイル\enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseCharacter\BaseCharacter.h">
+      <Filter>ヘッダー ファイル\baseCharacter</Filter>
     </ClInclude>
     <ClInclude Include="Tower.h">
       <Filter>ヘッダー ファイル\Tower</Filter>
