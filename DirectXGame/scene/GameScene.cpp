@@ -90,9 +90,10 @@ void GameScene::Initialize() {
 	// 軸方向表示が参照するビュープロジェクションを指定する (アドレス渡し)
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
 
-	
+	overheadCamera_ = std::make_unique<OverheadCamera>();
+	overheadCamera_->Initialize();
 
-	
+	cameracooltime_ = 10;
 
 }
 
@@ -115,9 +116,30 @@ void GameScene::Update() {
 
 	//タワーの更新
 	tower_->Update();
-
 	
+	overheadCamera_->Update();
 
+	if (Input::GetInstance()->GetJoystickState(0,joyState)&&cameracooltime_>=10)
+	{
+		if (joyState.Gamepad.wButtons&XINPUT_GAMEPAD_LEFT_THUMB) {
+			isOverheadCameraActive_ = true;
+			
+		}
+	}
+	if (overheadCamera_->IsCameraActive()) {
+		isOverheadCameraActive_ = false;
+		cameracooltimeActive_ = true;
+	
+	}
+	if (cameracooltimeActive_)
+	{
+		cameracooltime_--;
+	}
+	if (cameracooltime_ <= 0)
+	{
+		cameracooltime_ = 10;
+		cameracooltimeActive_ = false;
+	}
 
 #ifdef _DEBUG
 	if (input_->TriggerKey(DIK_RETURN)) {
@@ -132,6 +154,11 @@ void GameScene::Update() {
 		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
 		// ビュープロジェクション行列の転送
 		viewProjection_.TransferMatrix();
+	} else if (isOverheadCameraActive_) {
+		overheadCamera_->Timer();
+		viewProjection_.matView = overheadCamera_->GetViewProjection().matView;
+		viewProjection_.matProjection = overheadCamera_->GetViewProjection().matProjection;
+		viewProjection_.TransferMatrix();
 	} else {
 		// 追従カメラの更新
 		followCamera_->Update();
@@ -139,6 +166,8 @@ void GameScene::Update() {
 		viewProjection_.matView = followCamera_->GetViewProjection().matView;
 		viewProjection_.TransferMatrix();
 	}
+
+	
 
 }
 
