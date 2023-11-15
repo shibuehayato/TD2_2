@@ -52,6 +52,11 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
+    /// <summary>
+    /// 衝突判定と応答
+    /// </summary>
+	void CheckAllCollisions();
+
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
@@ -110,6 +115,8 @@ private: // メンバ変数
 
 	int32_t cameracooltime_;
 	bool cameracooltimeActive_ = false;
+
+	std::list<Enemy*> enemys_;
 
 	// ゲームパッドの状態を得る変数
 	XINPUT_STATE joyState;

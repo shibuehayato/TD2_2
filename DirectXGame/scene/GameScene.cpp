@@ -170,7 +170,7 @@ void GameScene::Update() {
 		viewProjection_.TransferMatrix();
 	}
 
-	
+	CheckAllCollisions();
 
 }
 
@@ -231,4 +231,37 @@ void GameScene::Draw() {
 	Sprite::PostDraw();
 
 #pragma endregion
+}
+
+void GameScene::CheckAllCollisions() 
+{
+	float towerRadius = 1.0f;
+	float enemyRadius = 1.0f;
+
+	// 判定対象AとBの座標
+	Vector3 posA, posB;
+
+	#pragma region 敵とタワーの当たり判定
+	// タワーの座標
+	posA = tower_->GetWorldPosition();
+
+	// タワーと敵全ての当たり判定
+	//for (Enemy* enemy : enemys_) {
+	    // 敵の座標
+		posB = enemy_->GetWorldPosition();
+
+		// 座標AとBの距離を求める
+		Vector3 Distance = {
+		    (posA.x - posB.x) * (posA.x - posB.x), (posA.y - posB.y) * (posA.y - posB.y),
+		    (posA.z - posB.z) * (posA.z - posB.z)};
+
+		if (Distance.x + Distance.y + Distance.z <=
+			(towerRadius + enemyRadius) * (towerRadius + enemyRadius))
+		{
+			// 敵の衝突時コールバック関数を呼び出す
+			enemy_->OnCollision();
+		}
+	//}
+
+	#pragma endregion
 }

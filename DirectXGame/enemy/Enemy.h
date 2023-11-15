@@ -17,6 +17,9 @@ public:
 	// ワールド座標を取得
 	Vector3 GetWorldPosition();
 
+	// 衝突を検出したら呼び出されるコールバック関数
+	void OnCollision();
+
 private:
 	// ワールド変換データ
 	WorldTransform worldTransformBody_;
@@ -24,4 +27,7 @@ private:
 	WorldTransform worldTransformR_arm_;
 	// タワー
 	Tower* tower_ = nullptr;
+
+	// デスフラグ
+	bool isDead_ = false;
 };
