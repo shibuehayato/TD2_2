@@ -68,7 +68,7 @@ void GameScene::Initialize() {
 	// タワーの生成
 	tower_ = std::make_unique<Tower>();
 	// タワーの3Dモデルの生成
-	modeltower_.reset(Model::CreateFromOBJ("tower", true));
+	modeltower_.reset(Model::CreateFromOBJ("tower2", true));
 	// タワーの初期化
 	tower_->Initialize(modeltower_.get());
 
