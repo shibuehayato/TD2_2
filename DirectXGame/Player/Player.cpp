@@ -35,7 +35,7 @@ void Player::Initialize(const std::vector<Model*>& models) {
 	
 	InitializeFloatingGimmick();
 
-	model_ = Model::Create();
+	modelBullet_ = Model::CreateFromOBJ("Bullet",true);
 }
 
 void Player::Update() { 
@@ -160,7 +160,7 @@ void Player::Attack() {
 
 		velocity = TransformNormal(velocity, worldTransformHead_.matWorld_);
 
-		newplayerbullet_->Initialize(model_,worldTransformHead_.translation_,velocity);
+		newplayerbullet_->Initialize(modelBullet_,worldTransformHead_.translation_,velocity);
 
 		playerbullets_.push_back(newplayerbullet_);
 		cooltimer_ = 0;

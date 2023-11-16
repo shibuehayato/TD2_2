@@ -55,7 +55,7 @@ private:
 	float l_arm[3] = {-0.6f, 1.5f, 0};
 	float r_arm[3] = {0.6f, 1.5f, 0};
 
-	Model* model_ = nullptr;
+	Model* modelBullet_ = nullptr;
 
 	//std::unique_ptr<PlayerBullet> playerbullet_;
 	PlayerBullet* playerbullet_ = nullptr;
