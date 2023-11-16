@@ -1,6 +1,5 @@
 ﻿#include "Player.h"
 #include <cassert>
-#include "MyMath.h"
 #include <ImGuiManager.h>
 
 Player::~Player()
@@ -36,18 +35,33 @@ void Player::Initialize(const std::vector<Model*>& models) {
 	InitializeFloatingGimmick();
 
 	model_ = Model::Create();
+
+	beam_ = std::make_unique<Beam>();
+	beam_->Initialize(model_,worldTransformBody_.translation_);
+	
+	
 }
 
 void Player::Update() { 
-
-	
+	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A&&durationAlive==false) {
+		
+		durationAlive = true;
+	}
+	if (durationAlive) {
+		duration++;
+	}
+	if (duration >= 200) {
+		durationAlive = false;
+		duration = 0;
+		
+	} 
 
 	// ゲームパッドが有効の場合if文が通る
 	if (Input::GetInstance()->GetJoystickState(0, joyState)) {
 		// 速さ
 		const float speed = 0.3f;
 
-		// 移動量
+	// 移動量
 		Vector3 move = {0, 0, 0};
 
 		move.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * speed;
@@ -65,11 +79,15 @@ void Player::Update() {
 			worldTransformL_arm_.rotation_.y = std::atan2(move.x, move.z);
 			worldTransformR_arm_.rotation_.y = std::atan2(move.x, move.z);
 		
+			beam_->Update(move);
+
 		// 座標移動
 		worldTransformHead_.translation_ = Add(worldTransformHead_.translation_, move);
 		worldTransformBody_.translation_ = Add(worldTransformBody_.translation_, move);
 		worldTransformL_arm_.translation_ = Add(worldTransformL_arm_.translation_, move);
 		worldTransformR_arm_.translation_ = Add(worldTransformR_arm_.translation_, move);
+
+	
 	} 
 
 	UpdateFloatingGimmick();
@@ -94,6 +112,10 @@ void Player::Update() {
 		return false;
 		});
 
+
+
+
+
 }
 
 void Player::Draw(const ViewProjection& viewProjection) {
@@ -108,12 +130,16 @@ void Player::Draw(const ViewProjection& viewProjection) {
 		playerbullet->Draw(viewProjection);
 	}
 
+	if (duration>=1&&duration<=100) {
+		beam_->Draw(viewProjection);
+	}
+
 }
 
 
 
-void Player::InitializeFloatingGimmick()
-{ 
+
+void Player::InitializeFloatingGimmick() { 
 	floatingParameter_ = 0.0f;
 }
 

@@ -18,6 +18,7 @@
 #include "Enemy.h"
 #include"Tower.h"
 #include"OverheadCamera.h"
+
 #include"ImGuiManager.h"
 
 
@@ -107,6 +108,8 @@ private: // メンバ変数
 
 	std::unique_ptr<OverheadCamera> overheadCamera_;
 	bool isOverheadCameraActive_ = false;
+
+
 
 	int32_t cameracooltime_;
 	bool cameracooltimeActive_ = false;

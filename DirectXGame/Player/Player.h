@@ -4,6 +4,7 @@
 #include "Input.h"
 #include "BaseCharacter.h"
 #include"PlayerBullet.h"
+#include"Beam.h"
 #include<list>
 
 class Player : public BaseCharacter{
@@ -25,6 +26,8 @@ public:
 	{
 		viewProjection_ = viewProjection;
 	}
+
+	
 
 	// 浮遊ギミック初期化
 	void InitializeFloatingGimmick();
@@ -66,4 +69,11 @@ private:
 
 	//弾のクールタイム
 	int32_t cooltimer_;
+
+	std::unique_ptr<Beam> beam_;
+
+	int32_t duration=0;
+
+	bool durationAlive = false;
+
 };
