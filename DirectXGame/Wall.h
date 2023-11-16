@@ -1,13 +1,17 @@
 #pragma once
+#include"WorldTransform.h"
+#include"Model.h"
 class Wall {
 public:
-	void Initialize();
+	void Initialize(Model* model);
 
 	void Update();
 
-	void Draw();
+	void Draw(ViewProjection& viewProjection);
 
 private:
-	WorldTransform worldTransform;
+	WorldTransform worldTransform_;
+
+	Model* model_ = nullptr;
 
 };
