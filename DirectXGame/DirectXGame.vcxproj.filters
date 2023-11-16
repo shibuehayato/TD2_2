@@ -106,6 +106,12 @@
     <Filter Include="ソース ファイル\Beam">
       <UniqueIdentifier>{6f1d318d-8f05-4cc3-9cd5-0ad1df12849b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Wall">
+      <UniqueIdentifier>{81d67416-b4b7-478d-8755-f12e01e31566}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Wall">
+      <UniqueIdentifier>{003ddf68-a620-49cc-9947-158f2fdbc050}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -158,6 +164,9 @@
     </ClCompile>
     <ClCompile Include="Beam.cpp">
       <Filter>ソース ファイル\Beam</Filter>
+    </ClCompile>
+    <ClCompile Include="Wall.cpp">
+      <Filter>ソース ファイル\Wall</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -277,6 +286,9 @@
     </ClInclude>
     <ClInclude Include="Beam.h">
       <Filter>ヘッダー ファイル\Beam</Filter>
+    </ClInclude>
+    <ClInclude Include="Wall.h">
+      <Filter>ヘッダー ファイル\Wall</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
