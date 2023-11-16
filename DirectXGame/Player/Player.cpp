@@ -3,8 +3,20 @@
 #include "MyMath.h"
 #include <ImGuiManager.h>
 
-void Player::Initialize(const std::vector<Model*>& models)
+Player::~Player()
 {
+	for (PlayerBullet* playerbullet : playerbullets_)
+	{
+		delete playerbullet;
+	}
+
+
+
+}
+
+
+void Player::Initialize(const std::vector<Model*>& models) {
+	
 	// 基底クラスの初期化
 	BaseCharacter::Initialize(models);
 
@@ -22,12 +34,13 @@ void Player::Initialize(const std::vector<Model*>& models)
 	input_ = Input::GetInstance();
 	
 	InitializeFloatingGimmick();
+
+	model_ = Model::Create();
 }
 
 void Player::Update() { 
 
-	// ゲームパッドの状態を得る変数
-	XINPUT_STATE joyState;
+	
 
 	// ゲームパッドが有効の場合if文が通る
 	if (Input::GetInstance()->GetJoystickState(0, joyState)) {
@@ -45,12 +58,13 @@ void Player::Update() {
 
 		// オフセットをカメラの回転に合わせて回転させる
 		move = TransformNormal(move, RotationMatrix);
+		
 
-		worldTransformHead_.rotation_.y = std::atan2(move.x, move.z);
-		worldTransformBody_.rotation_.y = std::atan2(move.x, move.z);
-		worldTransformL_arm_.rotation_.y = std::atan2(move.x, move.z);
-		worldTransformR_arm_.rotation_.y = std::atan2(move.x, move.z);
-
+			worldTransformHead_.rotation_.y = std::atan2(move.x, move.z);
+			worldTransformBody_.rotation_.y = std::atan2(move.x, move.z);
+			worldTransformL_arm_.rotation_.y = std::atan2(move.x, move.z);
+			worldTransformR_arm_.rotation_.y = std::atan2(move.x, move.z);
+		
 		// 座標移動
 		worldTransformHead_.translation_ = Add(worldTransformHead_.translation_, move);
 		worldTransformBody_.translation_ = Add(worldTransformBody_.translation_, move);
@@ -64,6 +78,22 @@ void Player::Update() {
     worldTransformBody_.UpdateMatrix();
 	worldTransformL_arm_.UpdateMatrix();
 	worldTransformR_arm_.UpdateMatrix();
+
+	Attack();
+
+	for (PlayerBullet* playerbullet : playerbullets_)
+	{
+		playerbullet->Update();
+	}
+
+	playerbullets_.remove_if([](PlayerBullet* bullet) {
+		if (bullet->IsDead()) {
+			delete bullet;
+			return true;
+		}
+		return false;
+		});
+
 }
 
 void Player::Draw(const ViewProjection& viewProjection) {
@@ -72,7 +102,15 @@ void Player::Draw(const ViewProjection& viewProjection) {
 	models_[1]->Draw(worldTransformHead_, viewProjection);
 	models_[2]->Draw(worldTransformL_arm_, viewProjection);
 	models_[3]->Draw(worldTransformR_arm_, viewProjection);
+
+	for (PlayerBullet* playerbullet : playerbullets_)
+	{
+		playerbullet->Draw(viewProjection);
+	}
+
 }
+
+
 
 void Player::InitializeFloatingGimmick()
 { 
@@ -107,5 +145,25 @@ void Player::UpdateFloatingGimmick() {
 	ImGui::SliderFloat3("ArmR Translation", r_arm, -5.0f, 5.0f);
 	ImGui::SliderFloat("range", &range_, 0.0f, 5.0f);
 	ImGui::End();
+
+}
+
+void Player::Attack() {
+	if (cooltimer_ <= 10) {
+        cooltimer_++;
+	}
+
+	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_B&&cooltimer_>=10) {
+		PlayerBullet* newplayerbullet_ = new PlayerBullet();
+		const float playerbulletspeed = 1.0f;
+		Vector3 velocity = {0.0f, 0.0f, playerbulletspeed};
+
+		velocity = TransformNormal(velocity, worldTransformHead_.matWorld_);
+
+		newplayerbullet_->Initialize(model_,worldTransformHead_.translation_,velocity);
+
+		playerbullets_.push_back(newplayerbullet_);
+		cooltimer_ = 0;
+	}
 
 }

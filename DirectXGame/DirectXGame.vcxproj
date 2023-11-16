@@ -117,6 +117,7 @@
     <ClCompile Include="math\MyMath.cpp" />
     <ClCompile Include="math\WorldTransformEx.cpp" />
     <ClCompile Include="OverheadCamera.cpp" />
+    <ClCompile Include="PlayerBullet.cpp" />
     <ClCompile Include="Player\Player.cpp" />
     <ClCompile Include="scene\GameScene.cpp" />
     <ClCompile Include="skydome\Skydome.cpp" />
@@ -156,6 +157,7 @@
     <ClInclude Include="math\Vector3.h" />
     <ClInclude Include="math\Vector4.h" />
     <ClInclude Include="OverheadCamera.h" />
+    <ClInclude Include="PlayerBullet.h" />
     <ClInclude Include="Player\Player.h" />
     <ClInclude Include="scene\GameScene.h" />
     <ClInclude Include="skydome\Skydome.h" />

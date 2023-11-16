@@ -3,14 +3,21 @@
 #include "WorldTransform.h"
 #include "Input.h"
 #include "BaseCharacter.h"
+#include"PlayerBullet.h"
+#include<list>
 
 class Player : public BaseCharacter{
 public:
+
+	~Player();
+
 	void Initialize(const std::vector<Model*>& models) override;
 
 	void Update() override;
 
 	void Draw(const ViewProjection& viewProjection) override;
+
+	void Attack();
 
 	const WorldTransform& GetWorldTransform() { return worldTransformBody_; }
 
@@ -47,4 +54,16 @@ private:
 	float body_[3] = {0, 0.2f, 0};
 	float l_arm[3] = {-0.6f, 1.5f, 0};
 	float r_arm[3] = {0.6f, 1.5f, 0};
+
+	Model* model_ = nullptr;
+
+	//std::unique_ptr<PlayerBullet> playerbullet_;
+	PlayerBullet* playerbullet_ = nullptr;
+	std::list<PlayerBullet*> playerbullets_;
+
+	// ゲームパッドの状態を得る変数
+	XINPUT_STATE joyState;
+
+	//弾のクールタイム
+	int32_t cooltimer_;
 };
