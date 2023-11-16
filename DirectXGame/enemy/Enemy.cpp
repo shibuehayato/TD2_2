@@ -3,14 +3,17 @@
 #include "Tower.h"
 #include <cmath>
 
-void Enemy::Initialize(const std::vector<Model*>& models) 
-{
+void Enemy::Initialize(const std::vector<Model*>& models, const Vector3& position) {
 	// 基底クラスの初期化
 	BaseCharacter::Initialize(models);
 
-	worldTransformBody_.translation_ = {37.0f, -0.5f, 35};
+	/*worldTransformBody_.translation_ = {37.0f, -0.5f, 35};
 	worldTransformL_arm_.translation_ = {36.1f,0.6f,35};
-	worldTransformR_arm_.translation_ = {37.9f, 0.6f, 35};
+	worldTransformR_arm_.translation_ = {37.9f, 0.6f, 35};*/
+
+	worldTransformBody_.translation_ = position;
+	worldTransformL_arm_.translation_ = position;
+	worldTransformR_arm_.translation_ = position;
 
 	worldTransformBody_.Initialize();
 	worldTransformL_arm_.Initialize();

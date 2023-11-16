@@ -2,10 +2,13 @@
 #include "TextureManager.h"
 #include <cassert>
 #include "AxisIndicator.h"
+#include <fstream>
 
 GameScene::GameScene() {}
 
-GameScene::~GameScene() {}
+GameScene::~GameScene() {
+	
+}
 
 void GameScene::Initialize() {
 
@@ -39,7 +42,7 @@ void GameScene::Initialize() {
 	player_->Initialize(playerModels);
 
 	// 敵キャラの生成
-	enemy_ = std::make_unique<Enemy>();
+	//enemy_ = std::make_unique<Enemy>();
 	// 3Dモデルの生成
 	modelEnemyBody_.reset(Model::CreateFromOBJ("needle_Body", true));
 	modelEnemyL_arm.reset(Model::CreateFromOBJ("needle_L_arm", true));
@@ -48,8 +51,12 @@ void GameScene::Initialize() {
 	std::vector<Model*> enemyModels = {
 	    modelEnemyBody_.get(), modelEnemyL_arm.get(), modelEnemyR_arm.get()
 	};
-	// 敵キャラの初期化
-	enemy_->Initialize(enemyModels);
+	//// 敵キャラの初期化
+	//enemy_->Initialize(enemyModels);
+	//// 敵キャラにゲームシーンを渡す
+	//enemy_->SetGameScene(this); 
+
+
 
 	// 3Dモデルの生成
 	modelSkydome_.reset(Model::CreateFromOBJ("skydome", true));
@@ -72,9 +79,17 @@ void GameScene::Initialize() {
 	// タワーの初期化
 	tower_->Initialize(modeltower_.get());
 
-	// 敵キャラにタワーのアドレスを渡す
-	enemy_->SetTower(tower_.get());
 
+	//Enemy* enemy = new Enemy();
+	//enemy1 = new Enemy();
+	//// 敵キャラの初期化
+	//enemy1->Initialize(enemyModels);
+	//// 敵キャラにゲームシーンを渡す
+	//enemy1->SetGameScene(this); 
+	//// 敵キャラにタワーのアドレスを渡す
+	//enemy1->SetTower(tower_.get());
+	//enemies_.push_back(static_cast<std::unique_ptr<Enemy>>(enemy1));
+	
 	// デバッグカメラの生成
 	debugCamera_ = std::make_unique<DebugCamera>(2000, 2000);
 
@@ -98,6 +113,7 @@ void GameScene::Initialize() {
 
 	cameracooltime_ = 10;
 
+	LoadEnemyPopData();
 }
 
 void GameScene::Update() {
@@ -106,11 +122,19 @@ void GameScene::Update() {
 	player_->Update();
 
 	// 敵キャラの更新
-	enemy_->Update();
+	//enemy_->Update();
 
+	//for (const auto& enemy : enemies_) {
+	//	enemy->Update();
+	//}
+	UpdateEnemyCommands();
+	for (const std::unique_ptr<Enemy>& enemy : enemies_) {
+		enemy->Update();
+	}
+	
 	// 天球の更新
 	skydome_->Update();
-
+	
 	// 地面の更新
 	ground_->Update();
 
@@ -170,7 +194,7 @@ void GameScene::Update() {
 		viewProjection_.TransferMatrix();
 	}
 
-	CheckAllCollisions();
+	//CheckAllCollisions();
 
 }
 
@@ -204,7 +228,10 @@ void GameScene::Draw() {
 	player_->Draw(viewProjection_);
 
 	// 敵キャラの描画
-	enemy_->Draw(viewProjection_);
+	//enemy_->Draw(viewProjection_);
+	for (const auto& enemy : enemies_) {
+		enemy->Draw(viewProjection_);
+	}
 
 	// 天球の描画
 	skydome_->Draw(viewProjection_);
@@ -233,35 +260,129 @@ void GameScene::Draw() {
 #pragma endregion
 }
 
-void GameScene::CheckAllCollisions() 
+//void GameScene::CheckAllCollisions() 
+//{
+//	float towerRadius = 2.5f;
+//	float enemyRadius = 2.5f;
+//
+//	// 判定対象AとBの座標
+//	Vector3 posA, posB;
+//
+//	#pragma region 敵とタワーの当たり判定
+//	// タワーの座標
+//	posA = tower_->GetWorldPosition();
+//
+//	// タワーと敵全ての当たり判定
+//	//for (Enemy* enemy : enemys_) {
+//	    // 敵の座標
+//		posB = enemy_->GetWorldPosition();
+//
+//		// 座標AとBの距離を求める
+//		Vector3 Distance = {
+//		    (posA.x - posB.x) * (posA.x - posB.x), (posA.y - posB.y) * (posA.y - posB.y),
+//		    (posA.z - posB.z) * (posA.z - posB.z)};
+//
+//		if (Distance.x + Distance.y + Distance.z <=
+//			(towerRadius + enemyRadius) * (towerRadius + enemyRadius))
+//		{
+//			// 敵の衝突時コールバック関数を呼び出す
+//			enemy_->OnCollision();
+//		}
+//	//}
+//
+//	#pragma endregion
+//}
+
+void GameScene::EnemyPop(Vector3 pos) 
 {
-	float towerRadius = 1.0f;
-	float enemyRadius = 1.0f;
+	// 敵キャラのモデル
+	std::vector<Model*> enemyModels = {
+	    modelEnemyBody_.get(), modelEnemyL_arm.get(), modelEnemyR_arm.get()
+	};
+	Enemy* enemy = new Enemy();
+	// 敵キャラの初期化
+	enemy->Initialize(enemyModels,pos);
+	// 敵キャラにゲームシーンを渡す
+	enemy->SetGameScene(this);
+	// 敵キャラにタワーのアドレスを渡す
+	enemy->SetTower(tower_.get());
+	enemies_.push_back(static_cast<std::unique_ptr<Enemy>>(enemy));
+}
 
-	// 判定対象AとBの座標
-	Vector3 posA, posB;
+void GameScene::LoadEnemyPopData() {
+	// ファイルを開く
+	std::ifstream file;
+	file.open("Resources/enemyPop.csv");
+	assert(file.is_open());
 
-	#pragma region 敵とタワーの当たり判定
-	// タワーの座標
-	posA = tower_->GetWorldPosition();
+	// ファイルの内容を文字列ストリームにコピー
+	enemyPopCommands << file.rdbuf();
 
-	// タワーと敵全ての当たり判定
-	//for (Enemy* enemy : enemys_) {
-	    // 敵の座標
-		posB = enemy_->GetWorldPosition();
+	// ファイルを閉じる
+	file.close();
+}
 
-		// 座標AとBの距離を求める
-		Vector3 Distance = {
-		    (posA.x - posB.x) * (posA.x - posB.x), (posA.y - posB.y) * (posA.y - posB.y),
-		    (posA.z - posB.z) * (posA.z - posB.z)};
-
-		if (Distance.x + Distance.y + Distance.z <=
-			(towerRadius + enemyRadius) * (towerRadius + enemyRadius))
-		{
-			// 敵の衝突時コールバック関数を呼び出す
-			enemy_->OnCollision();
+void GameScene::UpdateEnemyCommands() 
+{
+	// 待機処理
+	if (isWaiting_) {
+		waitTimer_--;
+		if (waitTimer_ <= 0) {
+			// 待機完了
+			isWaiting_ = false;
 		}
-	//}
+		return;
+	}
 
-	#pragma endregion
+	// 1行分の文字列を入れる変数
+	std::string line;
+
+	// コマンド実行ループ
+	while (getline(enemyPopCommands, line)) {
+		// 1行分の文字列をストリームに変換して解析しやすくする
+		std::istringstream line_stream(line);
+
+		std::string word;
+		// ,区切りで行の先頭文字列を取得
+		getline(line_stream, word, ',');
+
+		// "//"から始まる行はコメント
+		if (word.find("//") == 0) {
+			// コメント行を飛ばす
+			continue;
+		}
+
+		// POPコマンド
+		if (word.find("POP") == 0) {
+			// x座標
+			getline(line_stream, word, ',');
+			float x = (float)std::atof(word.c_str());
+
+			// y座標
+			getline(line_stream, word, ',');
+			float y = (float)std::atof(word.c_str());
+
+			// z座標
+			getline(line_stream, word, ',');
+			float z = (float)std::atof(word.c_str());
+
+			// 敵を発生させる
+			EnemyPop(Vector3(x, y, z));
+		}
+
+		// WAITコマンド
+		else if (word.find("WAIT") == 0) {
+			getline(line_stream, word, ',');
+
+			// 待ち時間
+			int32_t waitTime = atoi(word.c_str());
+
+			// 待機開始
+			isWaiting_ = true;
+			waitTimer_ = waitTime;
+
+			// コマンドループ
+			break;
+		}
+	}
 }

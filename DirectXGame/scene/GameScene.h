@@ -19,7 +19,7 @@
 #include"Tower.h"
 #include"OverheadCamera.h"
 #include"ImGuiManager.h"
-
+#include <sstream>
 
 /// <summary>
 /// ゲームシーン
@@ -52,10 +52,17 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
-    /// <summary>
-    /// 衝突判定と応答
-    /// </summary>
-	void CheckAllCollisions();
+    // 衝突判定と応答
+	//void CheckAllCollisions();
+
+	// 敵発生
+	void EnemyPop(Vector3 pos);
+
+	// 敵発生データの読み込み
+	void LoadEnemyPopData();
+
+	// 敵発生コマンドの更新
+	void UpdateEnemyCommands();
 
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
@@ -80,11 +87,13 @@ private: // メンバ変数
 	std::unique_ptr<Model> modelFighterR_arm_;
 
 	// 敵キャラ
-	std::unique_ptr<Enemy> enemy_;
+	//std::unique_ptr<Enemy> enemy_;
 	// 3Dモデルの生成
 	std::unique_ptr<Model> modelEnemyBody_;
 	std::unique_ptr<Model> modelEnemyL_arm;
 	std::unique_ptr<Model> modelEnemyR_arm;
+
+	std::list<std::unique_ptr<Enemy>> enemies_;
 
 	// 天球
 	std::unique_ptr<Skydome> skydome_;
@@ -116,10 +125,16 @@ private: // メンバ変数
 	int32_t cameracooltime_;
 	bool cameracooltimeActive_ = false;
 
-	std::list<Enemy*> enemys_;
-
 	// ゲームパッドの状態を得る変数
 	XINPUT_STATE joyState;
+
+	// 敵発生コマンド
+	std::stringstream enemyPopCommands;
+
+	// 待機中フラグ
+	bool isWaiting_;
+	// 待機タイマー
+	int32_t waitTimer_;
 
 	/// <summary>
 	/// ゲームシーン用
