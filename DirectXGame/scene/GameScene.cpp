@@ -6,9 +6,7 @@
 
 GameScene::GameScene() {}
 
-GameScene::~GameScene() {
-	
-}
+GameScene::~GameScene() {}
 
 void GameScene::Initialize() {
 
@@ -42,7 +40,7 @@ void GameScene::Initialize() {
 	player_->Initialize(playerModels);
 
 	// 敵キャラの生成
-	//enemy_ = std::make_unique<Enemy>();
+	//enemy = std::make_unique<Enemy>();
 	// 3Dモデルの生成
 	modelEnemyBody_.reset(Model::CreateFromOBJ("needle_Body", true));
 	modelEnemyL_arm.reset(Model::CreateFromOBJ("needle_L_arm", true));
@@ -194,7 +192,7 @@ void GameScene::Update() {
 		viewProjection_.TransferMatrix();
 	}
 
-	//CheckAllCollisions();
+	CheckAllCollisions();
 
 }
 
@@ -260,40 +258,40 @@ void GameScene::Draw() {
 #pragma endregion
 }
 
-//void GameScene::CheckAllCollisions() 
-//{
-//	float towerRadius = 2.5f;
-//	float enemyRadius = 2.5f;
-//
-//	// 判定対象AとBの座標
-//	Vector3 posA, posB;
-//
-//	#pragma region 敵とタワーの当たり判定
-//	// タワーの座標
-//	posA = tower_->GetWorldPosition();
-//
-//	// タワーと敵全ての当たり判定
-//	//for (Enemy* enemy : enemys_) {
-//	    // 敵の座標
-//		posB = enemy_->GetWorldPosition();
-//
-//		// 座標AとBの距離を求める
-//		Vector3 Distance = {
-//		    (posA.x - posB.x) * (posA.x - posB.x), (posA.y - posB.y) * (posA.y - posB.y),
-//		    (posA.z - posB.z) * (posA.z - posB.z)};
-//
-//		if (Distance.x + Distance.y + Distance.z <=
-//			(towerRadius + enemyRadius) * (towerRadius + enemyRadius))
-//		{
-//			// 敵の衝突時コールバック関数を呼び出す
-//			enemy_->OnCollision();
-//		}
-//	//}
-//
-//	#pragma endregion
-//}
+void GameScene::CheckAllCollisions() 
+{
+	float towerRadius = 2.5f;
+	float enemyRadius = 2.5f;
 
-void GameScene::EnemyPop(Vector3 pos) 
+	// 判定対象AとBの座標
+	Vector3 posA, posB;
+
+	#pragma region 敵とタワーの当たり判定
+	// タワーの座標
+	posA = tower_->GetWorldPosition();
+
+	// タワーと敵全ての当たり判定
+	for (const std::unique_ptr<Enemy>& enemy : enemies_) {
+	    // 敵の座標
+		posB = enemy->GetWorldPosition();
+
+		// 座標AとBの距離を求める
+		Vector3 Distance = {
+		    (posA.x - posB.x) * (posA.x - posB.x), (posA.y - posB.y) * (posA.y - posB.y),
+		    (posA.z - posB.z) * (posA.z - posB.z)};
+
+		if (Distance.x + Distance.y + Distance.z <=
+			(towerRadius + enemyRadius) * (towerRadius + enemyRadius))
+		{
+			// 敵の衝突時コールバック関数を呼び出す
+			enemy->OnCollision();
+		}
+	}
+
+	#pragma endregion
+}
+
+void GameScene::EnemyPop(Vector3 pos)
 {
 	// 敵キャラのモデル
 	std::vector<Model*> enemyModels = {

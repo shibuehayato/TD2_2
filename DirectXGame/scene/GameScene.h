@@ -53,7 +53,7 @@ public: // メンバ関数
 	void Draw();
 
     // 衝突判定と応答
-	//void CheckAllCollisions();
+	void CheckAllCollisions();
 
 	// 敵発生
 	void EnemyPop(Vector3 pos);
@@ -87,7 +87,7 @@ private: // メンバ変数
 	std::unique_ptr<Model> modelFighterR_arm_;
 
 	// 敵キャラ
-	//std::unique_ptr<Enemy> enemy_;
+	//Enemy* enemy_ = nullptr;
 	// 3Dモデルの生成
 	std::unique_ptr<Model> modelEnemyBody_;
 	std::unique_ptr<Model> modelEnemyL_arm;
