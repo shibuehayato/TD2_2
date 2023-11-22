@@ -16,7 +16,9 @@ void Tower::Update() {
 	
 	worldTransform_.UpdateMatrix(); }
 
-void Tower::Draw(ViewProjection& viewProjection) { model_->Draw(worldTransform_, viewProjection); }
+void Tower::Draw(ViewProjection& viewProjection) { 
+	model_->Draw(worldTransform_, viewProjection);
+}
 
 Vector3 Tower::GetWorldPosition() 
 { 

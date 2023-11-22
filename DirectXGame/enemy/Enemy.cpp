@@ -3,14 +3,17 @@
 #include "Tower.h"
 #include <cmath>
 
-void Enemy::Initialize(const std::vector<Model*>& models) 
-{
+void Enemy::Initialize(const std::vector<Model*>& models, const Vector3& position) {
 	// 基底クラスの初期化
 	BaseCharacter::Initialize(models);
 
-	worldTransformBody_.translation_ = {37.0f, -0.5f, 35};
+	/*worldTransformBody_.translation_ = {37.0f, -0.5f, 35};
 	worldTransformL_arm_.translation_ = {36.1f,0.6f,35};
-	worldTransformR_arm_.translation_ = {37.9f, 0.6f, 35};
+	worldTransformR_arm_.translation_ = {37.9f, 0.6f, 35};*/
+
+	worldTransformBody_.translation_ = position;
+	worldTransformL_arm_.translation_ = position;
+	worldTransformR_arm_.translation_ = position;
 
 	worldTransformBody_.Initialize();
 	worldTransformL_arm_.Initialize();
@@ -45,10 +48,12 @@ void Enemy::Update()
 }
 
 void Enemy::Draw(const ViewProjection& viewProjection) {
-	// 3Dモデル描画
-	models_[0]->Draw(worldTransformBody_, viewProjection);
-	models_[1]->Draw(worldTransformL_arm_, viewProjection);
-	models_[2]->Draw(worldTransformR_arm_, viewProjection);
+	if (isDead_ == false) {
+		// 3Dモデル描画
+		models_[0]->Draw(worldTransformBody_, viewProjection);
+		models_[1]->Draw(worldTransformL_arm_, viewProjection);
+		models_[2]->Draw(worldTransformR_arm_, viewProjection);
+	}
 }
 
 Vector3 Enemy::GetWorldPosition() 
@@ -62,3 +67,6 @@ Vector3 Enemy::GetWorldPosition()
 
 	return worldPos;
 }
+
+void Enemy::OnCollision()
+{ isDead_ = true; }
