@@ -38,6 +38,11 @@ void Player::Initialize(const std::vector<Model*>& models) {
 
 	beam_ = std::make_unique<Beam>();
 	beam_->Initialize(model_,worldTransformBody_.translation_);
+
+	wall_ = std::make_unique<Wall>();
+	const float WallSpeed = 0.1f;
+	Vector3 WallVelocity = {0.0f, 0.0f, WallSpeed};
+	wall_->Initialize(model_, GetWorldPosition(), WallVelocity);
 	
 	
 }
@@ -55,9 +60,11 @@ void Player::Update() {
 		duration = 0;
 		
 	} 
-
+	
+	
 	// ゲームパッドが有効の場合if文が通る
 	if (Input::GetInstance()->GetJoystickState(0, joyState)) {
+	
 		// 速さ
 		const float speed = 0.3f;
 
@@ -80,6 +87,7 @@ void Player::Update() {
 			worldTransformR_arm_.rotation_.y = std::atan2(move.x, move.z);
 		
 			beam_->Update(move);
+		    wall_->Update();
 
 		// 座標移動
 		worldTransformHead_.translation_ = Add(worldTransformHead_.translation_, move);
@@ -112,8 +120,8 @@ void Player::Update() {
 		return false;
 		});
 
-
-
+	
+	
 
 
 }
@@ -134,10 +142,23 @@ void Player::Draw(const ViewProjection& viewProjection) {
 		beam_->Draw(viewProjection);
 	}
 
+	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_X)
+	{
+		wall_->Draw(viewProjection);
+	}
+
 }
 
 
 
+
+Vector3 Player::GetWorldPosition() { 
+	Vector3 worldPos;
+	worldPos.x = worldTransformHead_.matWorld_.m[3][0];
+	worldPos.y = worldTransformHead_.matWorld_.m[3][1];
+	worldPos.z = worldTransformHead_.matWorld_.m[3][2];
+	return worldPos; 
+}
 
 void Player::InitializeFloatingGimmick() { 
 	floatingParameter_ = 0.0f;
@@ -191,5 +212,6 @@ void Player::Attack() {
 		playerbullets_.push_back(newplayerbullet_);
 		cooltimer_ = 0;
 	}
+	
 
 }
