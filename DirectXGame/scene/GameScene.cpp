@@ -331,9 +331,13 @@ void GameScene::CheckAllCollisions()
 {
 	float towerRadius = 2.5f;
 	float enemyRadius = 2.5f;
+	float pBulletRadius = 2.5f;
 
 	// 判定対象AとBの座標
 	Vector3 posA, posB;
+
+	// 自弾リストの取得
+	const std::list<PlayerBullet*>& playerBullets = player_->GetBullets();
 
 	#pragma region 敵とタワーの当たり判定
 	// タワーの座標
@@ -356,7 +360,25 @@ void GameScene::CheckAllCollisions()
 			enemy->OnCollision();
 		}
 	}
+	#pragma endregion
 
+	#pragma region 自弾と敵の当たり判定
+	for (const std::unique_ptr<Enemy>& enemy : enemies_) {
+		for (PlayerBullet* bullet : playerBullets) {
+			posA = enemy->GetWorldPosition();
+			posB = bullet->GetWorldPosition();
+
+			  Vector3 Distance = {
+			    (posA.x - posB.x) * (posA.x - posB.x), (posA.y - posB.y) * (posA.y - posB.y),
+			    (posA.z - posB.z) * (posA.z - posB.z)};
+
+			    if (Distance.x + Distance.y + Distance.z <=
+			      (enemyRadius + pBulletRadius) * (enemyRadius + pBulletRadius)) {
+				enemy->OnCollision();
+				bullet->OnCollision();
+			  }
+		}
+	}
 	#pragma endregion
 }
 

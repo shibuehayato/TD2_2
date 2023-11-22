@@ -31,6 +31,15 @@ public:
 	// 浮遊ギミック更新
 	void UpdateFloatingGimmick();
 
+	// ワールド座標を取得
+	Vector3 GetWorldPosition();
+
+	// 衝突を検出したら呼び出されるコールバック関数
+	void OnCollision();
+
+	// 弾リストを取得
+	const std::list<PlayerBullet*>& GetBullets() const { return playerbullets_; }
+
 private:
 	// ワールド変換データ
 	WorldTransform worldTransformHead_;
@@ -66,4 +75,7 @@ private:
 
 	//弾のクールタイム
 	int32_t cooltimer_;
+
+	// デスフラグ
+	bool isDead_ = false;
 };
