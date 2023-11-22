@@ -78,6 +78,9 @@ private:
 	bool durationAlive = false;
 
 	std::unique_ptr<Wall> wall_;
+
+	int32_t wallcolltimer_;
+	bool wallAlive_ = false;
 	
 
 };

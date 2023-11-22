@@ -3,12 +3,13 @@
 #include"Model.h"
 #include"Input.h"
 #include"MyMath.h"
+#include"ImGuiManager.h"
 
 class Wall {
 public:
-	void Initialize(Model* model,const Vector3& position,Vector3 velocity);
+	void Initialize(Model* model);
 	
-	void Update();
+	void Update(Vector3 move,Vector3 position);
 
 	void Draw(const ViewProjection& viewProjection);
 
@@ -23,9 +24,10 @@ private:
 	// ゲームパッドの状態を得る変数
 	XINPUT_STATE joyState;
 
-	Vector3 velocity_;
 
-	// カメラのビュープロジェクション
-	const ViewProjection* viewProjection_ = nullptr;
+
+int32_t timer_;
+	bool istimer_;
+	
 
 };
