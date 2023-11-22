@@ -127,6 +127,7 @@ private: // メンバ変数
 
 	// ゲームパッドの状態を得る変数
 	XINPUT_STATE joyState;
+	XINPUT_STATE prevjoyState;
 
 	// 敵発生コマンド
 	std::stringstream enemyPopCommands;
@@ -135,6 +136,20 @@ private: // メンバ変数
 	bool isWaiting_;
 	// 待機タイマー
 	int32_t waitTimer_;
+
+	// シーン切り替え
+	enum Scene { TITLE, OPERATION, GAME, CLEAR, GAMEOVER };
+	Scene scene = TITLE;
+	// テクスチャハンドル
+	uint32_t TitleTexture_ = 0;
+	uint32_t OperationTexture_ = 0;
+	uint32_t ClearTexture_ = 0;
+	uint32_t GameoverTexture_ = 0;
+	// スプライト
+	std::unique_ptr<Sprite> TitleSprite_ = nullptr;
+	std::unique_ptr<Sprite> OperationSprite_ = nullptr;
+	std::unique_ptr<Sprite> ClearSprite_ = nullptr;
+	std::unique_ptr<Sprite> GameoverSprite_ = nullptr;
 
 	/// <summary>
 	/// ゲームシーン用
