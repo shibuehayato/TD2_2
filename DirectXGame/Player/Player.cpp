@@ -155,7 +155,7 @@ void Player::Attack() {
 
 	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_B&&cooltimer_>=10) {
 		PlayerBullet* newplayerbullet_ = new PlayerBullet();
-		const float playerbulletspeed = 0.1f;
+		const float playerbulletspeed = 1.0f;
 		Vector3 velocity = {0.0f, 0.0f, playerbulletspeed};
 
 		velocity = TransformNormal(velocity, worldTransformHead_.matWorld_);
