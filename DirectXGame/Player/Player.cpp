@@ -35,7 +35,7 @@ void Player::Initialize(const std::vector<Model*>& models) {
 	
 	InitializeFloatingGimmick();
 
-	modelBullet_ = Model::CreateFromOBJ("Bullet",true);
+	modelBullet_ = Model::CreateFromOBJ("bullet",true);
 }
 
 void Player::Update() { 
@@ -155,7 +155,7 @@ void Player::Attack() {
 
 	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_B&&cooltimer_>=10) {
 		PlayerBullet* newplayerbullet_ = new PlayerBullet();
-		const float playerbulletspeed = 1.0f;
+		const float playerbulletspeed = 0.1f;
 		Vector3 velocity = {0.0f, 0.0f, playerbulletspeed};
 
 		velocity = TransformNormal(velocity, worldTransformHead_.matWorld_);
