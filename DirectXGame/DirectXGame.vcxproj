@@ -123,6 +123,7 @@
     <ClCompile Include="scene\GameScene.cpp" />
     <ClCompile Include="skydome\Skydome.cpp" />
     <ClCompile Include="Tower.cpp" />
+    <ClCompile Include="UI.cpp" />
     <ClCompile Include="Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -165,6 +166,7 @@
     <ClInclude Include="scene\GameScene.h" />
     <ClInclude Include="skydome\Skydome.h" />
     <ClInclude Include="Tower.h" />
+    <ClInclude Include="UI.h" />
     <ClInclude Include="Wall.h" />
   </ItemGroup>
   <ItemGroup>

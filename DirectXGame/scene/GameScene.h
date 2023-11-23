@@ -20,7 +20,7 @@
 #include"OverheadCamera.h"
 
 #include"ImGuiManager.h"
-
+#include"UI.h"
 
 /// <summary>
 /// ゲームシーン
@@ -109,6 +109,7 @@ private: // メンバ変数
 	std::unique_ptr<OverheadCamera> overheadCamera_;
 	bool isOverheadCameraActive_ = false;
 
+	std::unique_ptr<UI> ui_;
 
 
 	int32_t cameracooltime_;

@@ -85,7 +85,8 @@ void GameScene::Initialize() {
 	// 自キャラに追従カメラのビュープロジェクションをアドレス渡しする
 	player_->SetViewProjection(&followCamera_->GetViewProjection());
 
-	
+	ui_ = std::make_unique<UI>();
+	ui_->Initialize();
 
 	// 自キャラのワールドトランスフォームを追従カメラにセット
 	followCamera_->SetTarget(&player_->GetWorldTransform());
@@ -121,6 +122,9 @@ void GameScene::Update() {
 
 	//タワーの更新
 	tower_->Update();
+
+	//UIの更新
+	ui_->Update();
 	
 	overheadCamera_->Update();
 
@@ -228,6 +232,8 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
+
+	ui_->Draw();
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
