@@ -10,8 +10,8 @@ public:
 	void Draw();
 
 private:
-	uint32_t textureUI[3];
+	uint32_t texturesUI[6];
 
-Sprite* uisprites_[3];
+Sprite* uisprites_[6];
 
 };
