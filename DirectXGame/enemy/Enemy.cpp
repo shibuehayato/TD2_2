@@ -14,7 +14,7 @@ void Enemy::Initialize(const std::vector<Model*>& models, const Vector3& positio
 	worldTransformBody_.translation_ = position;
 	worldTransformL_arm_.translation_ = position;
 	worldTransformR_arm_.translation_ = position;
-
+	
 	worldTransformBody_.Initialize();
 	worldTransformL_arm_.Initialize();
 	worldTransformR_arm_.Initialize();
@@ -41,6 +41,8 @@ void Enemy::Update()
 	worldTransformBody_.translation_ = Add(worldTransformBody_.translation_, velocity);
 	worldTransformL_arm_.translation_ = Add(worldTransformL_arm_.translation_, velocity);
 	worldTransformR_arm_.translation_ = Add(worldTransformR_arm_.translation_, velocity);
+
+
 
 	worldTransformBody_.UpdateMatrix();
 	worldTransformL_arm_.UpdateMatrix();

@@ -151,6 +151,12 @@ private: // メンバ変数
 	std::unique_ptr<Sprite> ClearSprite_ = nullptr;
 	std::unique_ptr<Sprite> GameoverSprite_ = nullptr;
 
+	// クリアまでのタイマー
+	int ClearTimer_ = 0;
+
+	// タワーhp
+	int TowerHp_ = 2;
+
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>

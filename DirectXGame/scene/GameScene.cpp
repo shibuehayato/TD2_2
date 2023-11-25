@@ -134,6 +134,7 @@ void GameScene::Update() {
 
 	switch (scene) {
 	case GameScene::TITLE: // タイトルシーン
+
 		if (Input::GetInstance()->GetJoystickState(0, joyState)) {
 			if (Input::GetInstance()->GetJoystickStatePrevious(0, prevjoyState)) {
 				if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A &&
@@ -155,6 +156,8 @@ void GameScene::Update() {
 		break;
 	case GameScene::GAME:
 
+		//ClearTimer_ += 1;
+
 		// 自キャラの更新
 		player_->Update();
 
@@ -164,10 +167,18 @@ void GameScene::Update() {
 		// for (const auto& enemy : enemies_) {
 		//	enemy->Update();
 		// }
+
 		UpdateEnemyCommands();
 		for (const std::unique_ptr<Enemy>& enemy : enemies_) {
 			enemy->Update();
 		}
+
+		enemies_.remove_if([](std::unique_ptr<Enemy>& enemy) {
+			if (enemy->IsDead()) {
+				return true;
+			}
+			return false;
+		});
 
 		// 天球の更新
 		skydome_->Update();
@@ -228,17 +239,35 @@ void GameScene::Update() {
 
 		CheckAllCollisions();
 
-			if (Input::GetInstance()->GetJoystickState(0, joyState)) {
+		// クリア条件
+		if (ClearTimer_ == 60 * 10) {
+			scene = CLEAR;
+		}
+		// ゲームオーバー条件
+		if (TowerHp_ == 0) {
+
+			scene = GAMEOVER;
+		}
+
+		/*if (Input::GetInstance()->GetJoystickState(0, joyState)) {
 			if (Input::GetInstance()->GetJoystickStatePrevious(0, prevjoyState)) {
 				if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A &&
 				    !(prevjoyState.Gamepad.wButtons & XINPUT_GAMEPAD_A)) {
 					scene = CLEAR;
 				}
 			}
-		}
+		}*/
 		break;
 
 	case CLEAR: // クリアシーン
+
+		ClearTimer_ = 0;
+		TowerHp_ = 2;
+
+		for (const std::unique_ptr<Enemy>& enemy : enemies_) {
+			enemy->OnCollision();
+		}
+
 		if (Input::GetInstance()->GetJoystickState(0, joyState)) {
 			if (Input::GetInstance()->GetJoystickStatePrevious(0, prevjoyState)) {
 				if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A &&
@@ -248,6 +277,25 @@ void GameScene::Update() {
 			}
 		}
 		break;
+	case GAMEOVER: // ゲームオーバーシーン
+
+		ClearTimer_ = 0;
+		TowerHp_ = 2;
+
+		for (const std::unique_ptr<Enemy>& enemy : enemies_) {
+			enemy->OnCollision();
+		}
+
+		if (Input::GetInstance()->GetJoystickState(0, joyState)) {
+			if (Input::GetInstance()->GetJoystickStatePrevious(0, prevjoyState)) {
+				if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A &&
+				    !(prevjoyState.Gamepad.wButtons & XINPUT_GAMEPAD_A)) {
+					scene = TITLE;
+				}
+			}
+		}
+		break;
+
 	}
 }
 
@@ -273,7 +321,9 @@ void GameScene::Draw() {
 	if (scene == CLEAR) {
 		ClearSprite_->Draw();
 	}
-	//GameoverSprite_->Draw();
+	if (scene == GAMEOVER) {
+		GameoverSprite_->Draw();
+	}
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
@@ -330,8 +380,8 @@ void GameScene::Draw() {
 void GameScene::CheckAllCollisions() 
 {
 	float towerRadius = 2.5f;
-	float enemyRadius = 2.5f;
-	float pBulletRadius = 2.5f;
+	float enemyRadius = 1.0f;
+	float pBulletRadius = 1.0f;
 
 	// 判定対象AとBの座標
 	Vector3 posA, posB;
@@ -358,6 +408,7 @@ void GameScene::CheckAllCollisions()
 		{
 			// 敵の衝突時コールバック関数を呼び出す
 			enemy->OnCollision();
+			TowerHp_ -= 1;
 		}
 	}
 	#pragma endregion
@@ -399,28 +450,36 @@ void GameScene::EnemyPop(Vector3 pos)
 }
 
 void GameScene::LoadEnemyPopData() {
-	// ファイルを開く
-	std::ifstream file;
-	file.open("Resources/enemyPop.csv");
-	assert(file.is_open());
 
-	// ファイルの内容を文字列ストリームにコピー
-	enemyPopCommands << file.rdbuf();
+	int i = 0;
 
-	// ファイルを閉じる
-	file.close();
+	while (i < 10) {
+
+		// ファイルを開く
+		std::ifstream file;
+		file.open("Resources/enemyPop.csv");
+		assert(file.is_open());
+
+		// ファイルの内容を文字列ストリームにコピー
+		enemyPopCommands << file.rdbuf();
+		file.close();
+		if (i == 10) {
+			  i = 0;
+		}
+		i++;
+	}
 }
 
 void GameScene::UpdateEnemyCommands() 
 {
 	// 待機処理
 	if (isWaiting_) {
-		waitTimer_--;
-		if (waitTimer_ <= 0) {
+		  waitTimer_--;
+		  if (waitTimer_ <= 0) {
 			// 待機完了
 			isWaiting_ = false;
-		}
-		return;
+		  }
+		  return;
 	}
 
 	// 1行分の文字列を入れる変数
@@ -428,21 +487,21 @@ void GameScene::UpdateEnemyCommands()
 
 	// コマンド実行ループ
 	while (getline(enemyPopCommands, line)) {
-		// 1行分の文字列をストリームに変換して解析しやすくする
-		std::istringstream line_stream(line);
+		  // 1行分の文字列をストリームに変換して解析しやすくする
+		  std::istringstream line_stream(line);
 
-		std::string word;
-		// ,区切りで行の先頭文字列を取得
-		getline(line_stream, word, ',');
+		  std::string word;
+		  // ,区切りで行の先頭文字列を取得
+		  getline(line_stream, word, ',');
 
-		// "//"から始まる行はコメント
-		if (word.find("//") == 0) {
+		  // "//"から始まる行はコメント
+		  if (word.find("//") == 0) {
 			// コメント行を飛ばす
 			continue;
-		}
+		  }
 
-		// POPコマンド
-		if (word.find("POP") == 0) {
+		  // POPコマンド
+		  if (word.find("POP") == 0) {
 			// x座標
 			getline(line_stream, word, ',');
 			float x = (float)std::atof(word.c_str());
@@ -457,10 +516,10 @@ void GameScene::UpdateEnemyCommands()
 
 			// 敵を発生させる
 			EnemyPop(Vector3(x, y, z));
-		}
+		  }
 
-		// WAITコマンド
-		else if (word.find("WAIT") == 0) {
+		  // WAITコマンド
+		  else if (word.find("WAIT") == 0) {
 			getline(line_stream, word, ',');
 
 			// 待ち時間
@@ -472,6 +531,6 @@ void GameScene::UpdateEnemyCommands()
 
 			// コマンドループ
 			break;
-		}
+		  }
 	}
 }
