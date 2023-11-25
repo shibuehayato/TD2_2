@@ -44,7 +44,9 @@ void Player::Initialize(const std::vector<Model*>& models) {
 	
 
 	wall_->Initialize(model_);
-	
+
+	speed_ = std::make_unique<Speed>();
+	speed_->Initialize();
 	
 }
 
@@ -77,12 +79,16 @@ void Player::Update() {
 		wallcolltimer_ = 0;
 	}
 	
+	
 	// ゲームパッドが有効の場合if文が通る
 	if (Input::GetInstance()->GetJoystickState(0, joyState)) {
 	
 		// 速さ
-		const float speed = 0.3f;
-
+		float speed = 0.3f;
+		if (speed_->IsTime())
+		{
+			speed = 1.0f;
+		}
 	// 移動量
 		Vector3 move = {0, 0, 0};
 
@@ -137,7 +143,7 @@ void Player::Update() {
 		return false;
 		});
 
-	
+	speed_->Update();
 	
 
 

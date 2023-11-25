@@ -7,6 +7,7 @@
 #include"Beam.h"
 #include"Wall.h"
 #include<list>
+#include"Speed.h"
 
 class Player : public BaseCharacter{
 public:
@@ -81,6 +82,8 @@ private:
 
 	int32_t wallcolltimer_;
 	bool wallAlive_ = false;
+
+	std::unique_ptr<Speed> speed_;
 	
 
 };
