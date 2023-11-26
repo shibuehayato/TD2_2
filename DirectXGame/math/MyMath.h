@@ -34,3 +34,4 @@ Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rot, const Vecto
 Vector3 Normalize(const Vector3 v1);
 
 Matrix4x4 Inverse(Matrix4x4& m);
+

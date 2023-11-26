@@ -364,3 +364,4 @@ Matrix4x4 Inverse(Matrix4x4& m) {
 	                 determinantRecp;
 	return result;
 }
+

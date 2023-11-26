@@ -22,7 +22,7 @@ public:
 	// 衝突を検出したら呼び出されるコールバック関数
 	void OnCollision();
 
-	bool const IsTimer() { return timer_; }
+	bool const IsTimer() { return istimer_; }
 
 private:
 	WorldTransform worldTransform_;
