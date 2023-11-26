@@ -26,7 +26,7 @@ public:
 		viewProjection_ = viewProjection;
 	}
 
-	Vector3 GetWorldPosition();
+
 
 	// 浮遊ギミック初期化
 	void InitializeFloatingGimmick();
@@ -87,7 +87,7 @@ private:
 	bool isDead_ = false;
 
 	std::unique_ptr<Beam> beam_;
-
+	Model* modelbeam_ = nullptr;
 	int32_t duration = 0;
 
 	bool durationAlive_ = false;
@@ -97,5 +97,6 @@ private:
 	int32_t wallcolltimer_;
 	bool wallAlive_ = false;
 	
+	Model* modelwall_ = nullptr;
 
 };
