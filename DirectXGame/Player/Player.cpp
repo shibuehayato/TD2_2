@@ -44,15 +44,19 @@ void Player::Initialize(const std::vector<Model*>& models) {
 }
 
 void Player::Update() { 
-	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A&&durationAlive==false) {
+	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A&&durationAlive_==false) {
 		
-		durationAlive = true;
+		durationAlive_ = true;
 	}
-	if (durationAlive) {
+	if (durationAlive_||duration>=1) {
 		duration++;
 	}
+	if (duration >=100)
+	{
+		durationAlive_ = false;
+	}
 	if (duration >= 200) {
-		durationAlive = false;
+		
 		duration = 0;
 		
 	} 

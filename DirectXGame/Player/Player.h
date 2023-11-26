@@ -39,6 +39,11 @@ public:
 	// 弾リストを取得
 	const std::list<PlayerBullet*>& GetBullets() const { return playerbullets_; }
 
+	// 弾リストを取得
+	const std::unique_ptr<Beam>& GetBeam() const { return beam_; }
+
+	bool const IsdurationAlive() { return durationAlive_; }
+
 private:
 	// ワールド変換データ
 	WorldTransform worldTransformHead_;
@@ -82,7 +87,7 @@ private:
 
 	int32_t duration = 0;
 
-	bool durationAlive = false;
+	bool durationAlive_ = false;
 
 	Model* modelbeam_ = nullptr;
 };
