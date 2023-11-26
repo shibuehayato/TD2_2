@@ -100,6 +100,12 @@
     <Filter Include="ソース ファイル\baseCharacter">
       <UniqueIdentifier>{70f657bb-5360-412f-9796-142e89ad64bb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Beam">
+      <UniqueIdentifier>{3ce4ba23-e542-4ea5-bf07-66d31773cdbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Beam">
+      <UniqueIdentifier>{6f1d318d-8f05-4cc3-9cd5-0ad1df12849b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -146,6 +152,12 @@
     </ClCompile>
     <ClCompile Include="OverheadCamera.cpp">
       <Filter>ソース ファイル\OverheadCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerBullet.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Beam.cpp">
+      <Filter>ソース ファイル\Beam</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -259,6 +271,12 @@
     </ClInclude>
     <ClInclude Include="OverheadCamera.h">
       <Filter>ヘッダー ファイル\OverheadCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerBullet.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Beam.h">
+      <Filter>ヘッダー ファイル\Beam</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
