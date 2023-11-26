@@ -422,6 +422,8 @@ void GameScene::CheckAllCollisions()
 		}
 	}
 	#pragma endregion
+
+	
 }
 
 void GameScene::EnemyPop(Vector3 pos)
