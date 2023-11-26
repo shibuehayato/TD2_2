@@ -148,17 +148,30 @@ private: // メンバ変数
 	uint32_t OperationTexture_ = 0;
 	uint32_t ClearTexture_ = 0;
 	uint32_t GameoverTexture_ = 0;
-	// スプライト
+	// シーン画面のスプライト
 	std::unique_ptr<Sprite> TitleSprite_ = nullptr;
 	std::unique_ptr<Sprite> OperationSprite_ = nullptr;
 	std::unique_ptr<Sprite> ClearSprite_ = nullptr;
 	std::unique_ptr<Sprite> GameoverSprite_ = nullptr;
 
+	// タワーHpテクスチャハンドル
+	uint32_t TowerHp5Texture_ = 0;
+	uint32_t TowerHp4Texture_ = 0;
+	uint32_t TowerHp3Texture_ = 0;
+	uint32_t TowerHp2Texture_ = 0;
+	uint32_t TowerHp1Texture_ = 0;
+	// タワーHpのスプライト
+	std::unique_ptr<Sprite> TowerHp5Sprite_ = nullptr;
+	std::unique_ptr<Sprite> TowerHp4Sprite_ = nullptr;
+	std::unique_ptr<Sprite> TowerHp3Sprite_ = nullptr;
+	std::unique_ptr<Sprite> TowerHp2Sprite_ = nullptr;
+	std::unique_ptr<Sprite> TowerHp1Sprite_ = nullptr;
+
 	// クリアまでのタイマー
 	int ClearTimer_ = 0;
 
 	// タワーhp
-	int TowerHp_ = 2;
+	int TowerHp_ = 5;
 
 	/// <summary>
 	/// ゲームシーン用
