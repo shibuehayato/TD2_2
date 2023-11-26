@@ -34,10 +34,10 @@ void Player::Initialize(const std::vector<Model*>& models) {
 	
 	InitializeFloatingGimmick();
 
-	model_ = Model::Create();
+	modelbeam_ = Model::Create();
 
 	beam_ = std::make_unique<Beam>();
-	beam_->Initialize(model_,worldTransformBody_.translation_);
+	beam_->Initialize(modelbeam_,worldTransformBody_.translation_);
 	
 	
 	modelBullet_ = Model::CreateFromOBJ("bullet",true);

@@ -7,9 +7,8 @@
 #include"Beam.h"
 #include<list>
 
-class Player : public BaseCharacter{
+class Player : public BaseCharacter {
 public:
-
 	~Player();
 
 	void Initialize(const std::vector<Model*>& models) override;
@@ -22,12 +21,9 @@ public:
 
 	const WorldTransform& GetWorldTransform() { return worldTransformBody_; }
 
-	void SetViewProjection(const ViewProjection* viewProjection)
-	{
+	void SetViewProjection(const ViewProjection* viewProjection) {
 		viewProjection_ = viewProjection;
 	}
-
-	
 
 	// 浮遊ギミック初期化
 	void InitializeFloatingGimmick();
@@ -69,14 +65,14 @@ private:
 
 	Model* modelBullet_ = nullptr;
 
-	//std::unique_ptr<PlayerBullet> playerbullet_;
+	// std::unique_ptr<PlayerBullet> playerbullet_;
 	PlayerBullet* playerbullet_ = nullptr;
 	std::list<PlayerBullet*> playerbullets_;
 
 	// ゲームパッドの状態を得る変数
 	XINPUT_STATE joyState;
 
-	//弾のクールタイム
+	// 弾のクールタイム
 	int32_t cooltimer_;
 
 	// デスフラグ
@@ -84,8 +80,9 @@ private:
 
 	std::unique_ptr<Beam> beam_;
 
-	int32_t duration=0;
+	int32_t duration = 0;
 
 	bool durationAlive = false;
 
+	Model* modelbeam_ = nullptr;
 };
