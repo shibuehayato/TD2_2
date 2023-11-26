@@ -5,7 +5,7 @@ void Beam::Initialize(Model* model, Vector3 position ) {
 	assert(model);
 	model_ = model;
 	worldTransform_.translation_ = position;
-	worldTransform_.scale_ = {1.0f, 1.0f, 20.0f};
+	worldTransform_.scale_ = {0.0f, 0.0f, 0.0f};
 	worldTransform_.Initialize();
 
 	
