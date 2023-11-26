@@ -19,8 +19,17 @@ public:
 	// ワールド座標を取得
 	Vector3 GetWorldPosition();
 
+	// ワールドradiusを取得
+	Vector3 GetWorldRadius();
+
 	// 衝突を検出したら呼び出されるコールバック関数
 	void OnCollision();
+
+	// 衝突を検出したら呼び出されるコールバック関数
+	void SpeedOnCollision();
+
+	// 衝突を検出したら呼び出されるコールバック関数
+	void SpeedNoCollision();
 
 	void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
 
@@ -39,4 +48,7 @@ private:
 
 	// ゲームシーン
 	GameScene* gameScene_ = nullptr;
+
+	// 敵の速度
+	float enemySpeed = 0.1f;
 };

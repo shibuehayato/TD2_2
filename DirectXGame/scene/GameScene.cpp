@@ -382,9 +382,15 @@ void GameScene::CheckAllCollisions()
 	// 自弾リストの取得
 	const std::list<PlayerBullet*>& playerBullets = player_->GetBullets();
 
-	// 自弾リストの取得
+	// ビームの取得
 	const std::unique_ptr<Beam>& beam = player_->GetBeam();
 	Vector3 beamRadius = beam->GetWorldRadius();
+
+	// 壁の取得
+	const std::unique_ptr<Wall>& wall = player_->GetWall();
+	Vector3 wallRadius = wall->GetWorldRadius();
+
+	Vector3 enemyRadius_ ;
 
 	#pragma region 敵とタワーの当たり判定
 	// タワーの座標
@@ -450,21 +456,25 @@ void GameScene::CheckAllCollisions()
 #pragma endregion
 
 	#pragma region 壁と敵の当たり判定
-	posA = beam->GetWorldPosition();
+	posA = wall->GetWorldPosition();
 	for (const std::unique_ptr<Enemy>& enemy : enemies_) {
-
-		      posB = enemy->GetWorldPosition();
+		      enemyRadius_ = enemy->GetWorldRadius();
+		      posB = enemyRadius_;
 
 		      Vector3 Distance = {
 		          (posA.x - posB.x) * (posA.x - posB.x), (posA.y - posB.y) * (posA.y - posB.y),
 		          (posA.z - posB.z) * (posA.z - posB.z)};
 
 		      if (Distance.x + Distance.y + Distance.z <=
-		              (enemyRadius + beamRadius.z) * (enemyRadius + beamRadius.z) &&
-		          player_->IsdurationAlive()) {
-			    enemy->OnCollision();
-			    beam->OnCollision();
+		              (enemyRadius + wallRadius.x) * (enemyRadius + wallRadius.x)&&wall->IsTimer()) {
+			    enemy->SpeedOnCollision();
+			    wall->OnCollision();
 		      }
+			  if (wall->IsTimer() == false)
+			  {
+			    enemy->SpeedNoCollision();
+			  }
+			  
 	}
 #pragma endregion
 	

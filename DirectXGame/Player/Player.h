@@ -42,10 +42,13 @@ public:
 	// 弾リストを取得
 	const std::list<PlayerBullet*>& GetBullets() const { return playerbullets_; }
 
-	// 弾リストを取得
+	// ビームを取得
 	const std::unique_ptr<Beam>& GetBeam() const { return beam_; }
 
 	bool const IsdurationAlive() { return durationAlive_; }
+
+	// 壁を取得
+	const std::unique_ptr<Wall>& GetWall() const { return wall_; }
 
 private:
 	// ワールド変換データ

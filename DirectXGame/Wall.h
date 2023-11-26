@@ -13,6 +13,17 @@ public:
 
 	void Draw(const ViewProjection& viewProjection);
 
+	// ワールド座標を取得
+	Vector3 GetWorldPosition();
+
+	// ワールドradiusを取得
+	Vector3 GetWorldRadius();
+
+	// 衝突を検出したら呼び出されるコールバック関数
+	void OnCollision();
+
+	bool const IsTimer() { return timer_; }
+
 private:
 	WorldTransform worldTransform_;
 
