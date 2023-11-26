@@ -5,6 +5,7 @@
 #include "BaseCharacter.h"
 #include"PlayerBullet.h"
 #include"Beam.h"
+#include"Wall.h"
 #include<list>
 
 class Player : public BaseCharacter {
@@ -24,6 +25,8 @@ public:
 	void SetViewProjection(const ViewProjection* viewProjection) {
 		viewProjection_ = viewProjection;
 	}
+
+	Vector3 GetWorldPosition();
 
 	// 浮遊ギミック初期化
 	void InitializeFloatingGimmick();
@@ -89,5 +92,10 @@ private:
 
 	bool durationAlive_ = false;
 
-	Model* modelbeam_ = nullptr;
+	std::unique_ptr<Wall> wall_;
+
+	int32_t wallcolltimer_;
+	bool wallAlive_ = false;
+	
+
 };
