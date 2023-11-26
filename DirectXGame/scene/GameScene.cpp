@@ -114,6 +114,8 @@ void GameScene::Initialize() {
 	// 自キャラに追従カメラのビュープロジェクションをアドレス渡しする
 	player_->SetViewProjection(&followCamera_->GetViewProjection());
 
+	
+
 	// 自キャラのワールドトランスフォームを追従カメラにセット
 	followCamera_->SetTarget(&player_->GetWorldTransform());
 
