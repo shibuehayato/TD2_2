@@ -122,6 +122,7 @@
     <ClCompile Include="Player\Player.cpp" />
     <ClCompile Include="scene\GameScene.cpp" />
     <ClCompile Include="skydome\Skydome.cpp" />
+    <ClCompile Include="TimeLimit.cpp" />
     <ClCompile Include="Tower.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -163,6 +164,7 @@
     <ClInclude Include="Player\Player.h" />
     <ClInclude Include="scene\GameScene.h" />
     <ClInclude Include="skydome\Skydome.h" />
+    <ClInclude Include="TimeLimit.h" />
     <ClInclude Include="Tower.h" />
   </ItemGroup>
   <ItemGroup>
