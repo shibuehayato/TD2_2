@@ -29,6 +29,23 @@ void GameScene::Initialize() {
 	ClearSprite_.reset(Sprite::Create(ClearTexture_, {0, 0}));
 	GameoverSprite_.reset(Sprite::Create(GameoverTexture_, {0, 0}));
 
+	TowerHp5Texture_ = TextureManager::Load("towerHp/TowerHp5.png");
+	TowerHp4Texture_ = TextureManager::Load("towerHp/TowerHp4.png");
+	TowerHp3Texture_ = TextureManager::Load("towerHp/TowerHp3.png");
+	TowerHp2Texture_ = TextureManager::Load("towerHp/TowerHp2.png");
+	TowerHp1Texture_ = TextureManager::Load("towerHp/TowerHp1.png");
+
+	TowerHp5Sprite_ = std::make_unique<Sprite>();
+	TowerHp4Sprite_ = std::make_unique<Sprite>();
+	TowerHp3Sprite_ = std::make_unique<Sprite>();
+	TowerHp2Sprite_ = std::make_unique<Sprite>();
+	TowerHp1Sprite_ = std::make_unique<Sprite>();
+
+	TowerHp5Sprite_.reset(Sprite::Create(TowerHp5Texture_, {0, 0}));
+	TowerHp4Sprite_.reset(Sprite::Create(TowerHp4Texture_, {0, 0}));
+	TowerHp3Sprite_.reset(Sprite::Create(TowerHp3Texture_, {0, 0}));
+	TowerHp2Sprite_.reset(Sprite::Create(TowerHp2Texture_, {0, 0}));
+	TowerHp1Sprite_.reset(Sprite::Create(TowerHp1Texture_, {0, 0}));
 
 	// ファイル名を指定してテクスチャを読み込む
 	textureHandle_ = TextureManager::Load("sample.png");
@@ -253,7 +270,7 @@ void GameScene::Update() {
 	case CLEAR: // クリアシーン
 
 		ClearTimer_ = 0;
-		TowerHp_ = 2;
+		TowerHp_ = 5;
 
 		for (const std::unique_ptr<Enemy>& enemy : enemies_) {
 			enemy->OnCollision();
@@ -271,7 +288,7 @@ void GameScene::Update() {
 	case GAMEOVER: // ゲームオーバーシーン
 
 		ClearTimer_ = 0;
-		TowerHp_ = 2;
+		TowerHp_ = 5;
 
 		for (const std::unique_ptr<Enemy>& enemy : enemies_) {
 			enemy->OnCollision();
@@ -361,6 +378,24 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
+
+	if (scene == GAME) {
+		if (TowerHp_ == 5) {
+			TowerHp5Sprite_->Draw();
+		}
+		if (TowerHp_ == 4) {
+			TowerHp4Sprite_->Draw();
+		}
+		if (TowerHp_ == 3) {
+			TowerHp3Sprite_->Draw();
+		}
+		if (TowerHp_ == 2) {
+			TowerHp2Sprite_->Draw();
+		}
+		if (TowerHp_ == 1) {
+			TowerHp1Sprite_->Draw();
+		}
+	}
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
