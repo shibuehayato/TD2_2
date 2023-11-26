@@ -128,6 +128,10 @@ void GameScene::Initialize() {
 	followCamera_ = std::make_unique<FollowCamera>();
 	followCamera_->Initialize();
 
+	// タイムリミットの生成
+	TimeLimit_ = std::make_unique<TimeLimit>();
+	TimeLimit_->Initialize();
+
 	// 自キャラに追従カメラのビュープロジェクションをアドレス渡しする
 	player_->SetViewProjection(&followCamera_->GetViewProjection());
 
@@ -173,7 +177,7 @@ void GameScene::Update() {
 		break;
 	case GameScene::GAME:
 
-		ClearTimer_ += 1;
+		ClearTimer_ -= 1;
 
 		// 自キャラの更新
 		player_->Update();
@@ -208,6 +212,9 @@ void GameScene::Update() {
 
 		// タワーの更新
 		tower_->Update();
+
+		// タイムリミットの更新
+		TimeLimit_->Update();
 
 		overheadCamera_->Update();
 
@@ -257,7 +264,7 @@ void GameScene::Update() {
 		CheckAllCollisions();
 
 		// クリア条件
-		if (ClearTimer_ == 60 * 60) {
+		if (ClearTimer_ == 0) {
 			scene = CLEAR;
 		}
 		// ゲームオーバー条件
@@ -269,8 +276,9 @@ void GameScene::Update() {
 
 	case CLEAR: // クリアシーン
 
-		ClearTimer_ = 0;
+		ClearTimer_ = 60*60;
 		TowerHp_ = 5;
+		TimeLimit_->Reset();
 
 		for (const std::unique_ptr<Enemy>& enemy : enemies_) {
 			enemy->OnCollision();
@@ -287,8 +295,9 @@ void GameScene::Update() {
 		break;
 	case GAMEOVER: // ゲームオーバーシーン
 
-		ClearTimer_ = 0;
+		ClearTimer_ = 60*60;
 		TowerHp_ = 5;
+		TimeLimit_->Reset();
 
 		for (const std::unique_ptr<Enemy>& enemy : enemies_) {
 			enemy->OnCollision();
@@ -395,6 +404,8 @@ void GameScene::Draw() {
 		if (TowerHp_ == 1) {
 			TowerHp1Sprite_->Draw();
 		}
+
+		TimeLimit_->Draw();
 	}
 
 	// スプライト描画後処理

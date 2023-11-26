@@ -20,6 +20,7 @@
 #include"OverheadCamera.h"
 #include"ImGuiManager.h"
 #include <sstream>
+#include "TimeLimit.h"
 
 /// <summary>
 /// ゲームシーン
@@ -165,10 +166,13 @@ private: // メンバ変数
 	std::unique_ptr<Sprite> TowerHp1Sprite_ = nullptr;
 
 	// クリアまでのタイマー
-	int ClearTimer_ = 0;
+	int ClearTimer_ = 60*60;
 
 	// タワーhp
 	int TowerHp_ = 5;
+
+	// タイムリミット
+	std::unique_ptr<TimeLimit> TimeLimit_;
 
 	/// <summary>
 	/// ゲームシーン用
