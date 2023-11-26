@@ -156,7 +156,7 @@ void GameScene::Update() {
 		break;
 	case GameScene::GAME:
 
-		//ClearTimer_ += 1;
+		ClearTimer_ += 1;
 
 		// 自キャラの更新
 		player_->Update();
@@ -240,7 +240,7 @@ void GameScene::Update() {
 		CheckAllCollisions();
 
 		// クリア条件
-		if (ClearTimer_ == 60 * 10) {
+		if (ClearTimer_ == 60 * 60) {
 			scene = CLEAR;
 		}
 		// ゲームオーバー条件
@@ -248,15 +248,6 @@ void GameScene::Update() {
 
 			scene = GAMEOVER;
 		}
-
-		/*if (Input::GetInstance()->GetJoystickState(0, joyState)) {
-			if (Input::GetInstance()->GetJoystickStatePrevious(0, prevjoyState)) {
-				if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A &&
-				    !(prevjoyState.Gamepad.wButtons & XINPUT_GAMEPAD_A)) {
-					scene = CLEAR;
-				}
-			}
-		}*/
 		break;
 
 	case CLEAR: // クリアシーン
