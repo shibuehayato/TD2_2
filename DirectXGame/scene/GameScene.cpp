@@ -3,6 +3,7 @@
 #include <cassert>
 #include "AxisIndicator.h"
 #include <fstream>
+#include <algorithm>
 
 GameScene::GameScene() {}
 
@@ -375,8 +376,8 @@ void GameScene::CheckAllCollisions()
 	float towerRadius = 2.5f;
 	float enemyRadius = 1.0f;
 	float pBulletRadius = 1.0f;
-	float beamRadius = 3.0f;
-	float wallRadius = 3.0f;
+	float beamRadius = 20.0f;
+	//float wallRadius = 20.0f;
 
 	// 判定対象AとBの座標
 	Vector3 posA, posB;
@@ -389,7 +390,7 @@ void GameScene::CheckAllCollisions()
 	
 
 	// 壁の取得
-	const std::unique_ptr<Wall>& wall = player_->GetWall();
+	//const std::unique_ptr<Wall>& wall = player_->GetWall();
 	
 
 	
@@ -438,18 +439,23 @@ void GameScene::CheckAllCollisions()
 	#pragma endregion
 
 	#pragma region ビームと敵の当たり判定
-	posA = beam->GetWorldPosition();
+	posA = player_->GetWorldPosition();
 	for (const std::unique_ptr<Enemy>& enemy : enemies_) {
 		
+		
 			
-			  posB = enemy->GetWorldPosition();
-
-			   Vector3 Distance = {
+			 posB = enemy->GetWorldPosition();
+		Vector3 closestPoint{
+		    std::clamp(posB.x, posA.x-beamRadius, posA.x+beamRadius ), 
+			std::clamp(posB.y, posA.y-beamRadius, posA.y+beamRadius ),
+		    std::clamp(posB.z, posA.z-beamRadius, posA.z + beamRadius)};
+		      float distance = Length(Subtract(posB, closestPoint));
+			 /*  Vector3 Distance = {
 		          (posA.x - posB.x) * (posA.x - posB.x), (posA.y - posB.y) * (posA.y - posB.y),
-		          (posA.z - posB.z) * (posA.z - posB.z)};
+		          (posA.z - posB.z) * (posA.z - posB.z)};*/
 
-			  if (Distance.x + Distance.y + Distance.z <=
-		           (enemyRadius + beamRadius) * (enemyRadius + beamRadius)&&player_->IsdurationAlive()) {
+			  if (distance<=enemyRadius &&
+		          player_->IsdurationAlive()) {
 				enemy->OnCollision();
 				beam->OnCollision();
 			  }
@@ -457,29 +463,32 @@ void GameScene::CheckAllCollisions()
 	}
 #pragma endregion
 
-	#pragma region 壁と敵の当たり判定
-	posA = wall->GetWorldPosition();
-	for (const std::unique_ptr<Enemy>& enemy : enemies_) {
-		     
-		      posB = enemy->GetWorldPosition();
-
-			   Vector3 Distance = {
-		          (posA.x - posB.x) * (posA.x - posB.x), (posA.y - posB.y) * (posA.y - posB.y),
-		          (posA.z - posB.z) * (posA.z - posB.z)};
-		     
-		      if ((Distance.x + Distance.y + Distance.z <=
-		            (enemyRadius + wallRadius) * (enemyRadius +wallRadius)) &&
-		           wall->IsTimer()) {
-			    enemy->SpeedOnCollision();
-			    wall->OnCollision();
-		      }
-			  if (wall->IsTimer() == false)
-			  {
-			    enemy->SpeedNoCollision();
-			  }
-			  
-	}
-#pragma endregion
+//	#pragma region 壁と敵の当たり判定
+//	posA = player_->GetWorldPosition();
+//	for (const std::unique_ptr<Enemy>& enemy : enemies_) {
+//		     
+//		      posB = enemy->GetWorldPosition();
+//		      Vector3 closestPoint{
+//		          std::clamp(posB.x, posA.x-10.0f, posA.x + wallRadius),
+//		          std::clamp(posB.y, posA.y-10.0f, posA.y + wallRadius),
+//		          std::clamp(posB.z, posA.z-10.0f, posA.z + wallRadius)};
+//		      float distance = Length(Subtract(posB, closestPoint));
+//			  /* Vector3 Distance = {
+//		          (posA.x - posB.x) * (posA.x - posB.x), (posA.y - posB.y) * (posA.y - posB.y),
+//		          (posA.z - posB.z) * (posA.z - posB.z)};*/
+//		     
+//		      if (distance<=enemyRadius-1.0f&&
+//		           wall->IsTimer()) {
+//			    enemy->SpeedOnCollision();
+//			    wall->OnCollision();
+//		      }
+//			  if (wall->IsTimer() == false)
+//			  {
+//			    enemy->SpeedNoCollision();
+//			  }
+//			  
+//	}
+//#pragma endregion
 	
 }
 

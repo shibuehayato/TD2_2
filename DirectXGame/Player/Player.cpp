@@ -39,11 +39,11 @@ void Player::Initialize(const std::vector<Model*>& models) {
 	beam_ = std::make_unique<Beam>();
 	beam_->Initialize(modelbeam_,worldTransformBody_.translation_);
 
-	wall_ = std::make_unique<Wall>();
-	
-	modelwall_ = Model::Create();
+	//wall_ = std::make_unique<Wall>();
+	//
+	//modelwall_ = Model::Create();
 
-	wall_->Initialize(modelwall_);
+	//wall_->Initialize(modelwall_);
 	beam_->Initialize(modelbeam_,worldTransformBody_.translation_);
 	
 	
@@ -68,7 +68,7 @@ void Player::Update() {
 		
 	} 
 
-	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_X &&wallAlive_ == false)
+	/*if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_X &&wallAlive_ == false)
 	{
 		wallAlive_ = true;
 	}
@@ -81,7 +81,7 @@ void Player::Update() {
 	{
 		wallAlive_ = false;
 		wallcolltimer_ = 0;
-	}
+	}*/
 	
 	// ゲームパッドが有効の場合if文が通る
 	if (Input::GetInstance()->GetJoystickState(0, joyState)) {
@@ -108,7 +108,7 @@ void Player::Update() {
 			worldTransformR_arm_.rotation_.y = std::atan2(move.x, move.z);
 		
 			beam_->Update(move);
-		    wall_->Update(move,worldTransformBody_.translation_);
+		    //wall_->Update(move,worldTransformBody_.translation_);
 
 		// 座標移動
 		worldTransformHead_.translation_ = Add(worldTransformHead_.translation_, move);
@@ -165,10 +165,10 @@ void Player::Draw(const ViewProjection& viewProjection) {
 		beam_->Draw(viewProjection);
 	}
 
-	if (wallcolltimer_>=1&&wallcolltimer_<=280)
+	/*if (wallcolltimer_>=1&&wallcolltimer_<=280)
 	{
 		wall_->Draw(viewProjection);
-	}
+	}*/
 
 }
 
