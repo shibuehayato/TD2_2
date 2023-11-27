@@ -50,6 +50,7 @@ void GameScene::Initialize() {
 	};
 	// 敵キャラの初期化
 	enemy_->Initialize(enemyModels);
+	enemy_->SetPlayer(player_.get());
 
 	// 3Dモデルの生成
 	modelSkydome_.reset(Model::CreateFromOBJ("skydome", true));

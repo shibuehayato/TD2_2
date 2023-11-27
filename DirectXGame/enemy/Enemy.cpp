@@ -1,6 +1,7 @@
 ﻿#include "Enemy.h"
 #include "MyMath.h"
 #include "Tower.h"
+#include"Player.h"
 #include <cmath>
 
 void Enemy::Initialize(const std::vector<Model*>& models) 
@@ -15,14 +16,21 @@ void Enemy::Initialize(const std::vector<Model*>& models)
 	worldTransformBody_.Initialize();
 	worldTransformL_arm_.Initialize();
 	worldTransformR_arm_.Initialize();
+
 }
 
 void Enemy::Update() 
 { 
 	// 敵の速度
 	float enemySpeed = 0.1f;
+	if (player_->IsSpeed())
+	{
+		enemySpeed = 0.01f;
+	} else if (player_->IsSpeed() == false) {
+		enemySpeed = 0.1f;
+	}
 	Vector3 velocity(0, 0, enemySpeed);
-
+	
 	Vector3 towerPosition = tower_->GetWorldPosition();
 	Vector3 enemyPosition = this->GetWorldPosition();
 	velocity = Subtract(towerPosition, enemyPosition);

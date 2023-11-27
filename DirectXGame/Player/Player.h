@@ -29,6 +29,8 @@ public:
 		viewProjection_ = viewProjection;
 	}
 
+	bool const IsSpeed() { return isspeed_; }
+
 	Vector3 GetWorldPosition();
 
 	// 浮遊ギミック初期化
@@ -84,6 +86,7 @@ private:
 	bool wallAlive_ = false;
 
 	std::unique_ptr<Speed> speed_;
+	bool isspeed_ = false;
 	
 
 };

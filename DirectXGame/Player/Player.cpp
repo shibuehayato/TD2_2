@@ -88,6 +88,10 @@ void Player::Update() {
 		if (speed_->IsTime())
 		{
 			speed = 1.0f;
+			isspeed_ = true;
+		} else if (speed_->IsTime() == false) {
+			speed = 0.3f;
+			isspeed_ = false;
 		}
 	// 移動量
 		Vector3 move = {0, 0, 0};

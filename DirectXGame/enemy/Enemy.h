@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "BaseCharacter.h"
 
+class Player;
 // タワークラスの前方宣言
 class Tower;
 
@@ -14,6 +15,8 @@ public:
 
 	void SetTower(Tower* tower) { tower_ = tower; }
 
+	void SetPlayer(Player* player) { player_ = player; }
+
 	// ワールド座標を取得
 	Vector3 GetWorldPosition();
 
@@ -24,4 +27,6 @@ private:
 	WorldTransform worldTransformR_arm_;
 	// タワー
 	Tower* tower_ = nullptr;
+
+	Player* player_ = nullptr;
 };
