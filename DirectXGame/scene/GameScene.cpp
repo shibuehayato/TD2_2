@@ -14,6 +14,11 @@ void GameScene::Initialize() {
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 
+	// サウンドデータの読み込み
+	bgmDataHandle_ = audio_->LoadWave("bgm.wav");
+	clearSoundDataHandle_ = audio_->LoadWave("clear.wav");
+	gameOverSoundDataHandle_ = audio_->LoadWave("GameOver.wav");
+
 	TitleTexture_ = TextureManager::Load("scene/title.png");
 	OperationTexture_ = TextureManager::Load("scene/operation.png");
 	ClearTexture_ = TextureManager::Load("scene/clear.png");
@@ -177,6 +182,13 @@ void GameScene::Update() {
 		break;
 	case GameScene::GAME:
 
+		if (!audio_->IsPlaying(voiceHandle_)) {
+
+			voiceHandle_ = audio_->PlayWave(bgmDataHandle_, true, 0.5);
+		}
+
+		audio_->ResumeWave(voiceHandle_);
+
 		ClearTimer_ -= 1;
 
 		// 自キャラの更新
@@ -279,6 +291,7 @@ void GameScene::Update() {
 		ClearTimer_ = 60*60;
 		TowerHp_ = 5;
 		TimeLimit_->Reset();
+		audio_->PauseWave(voiceHandle_);
 
 		for (const std::unique_ptr<Enemy>& enemy : enemies_) {
 			enemy->OnCollision();
@@ -298,6 +311,7 @@ void GameScene::Update() {
 		ClearTimer_ = 60*60;
 		TowerHp_ = 5;
 		TimeLimit_->Reset();
+		audio_->PauseWave(voiceHandle_);
 
 		for (const std::unique_ptr<Enemy>& enemy : enemies_) {
 			enemy->OnCollision();

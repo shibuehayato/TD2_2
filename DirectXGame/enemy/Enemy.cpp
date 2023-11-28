@@ -15,6 +15,8 @@ void Enemy::Initialize(const std::vector<Model*>& models, const Vector3& positio
 	worldTransformL_arm_.translation_ = position;
 	worldTransformR_arm_.translation_ = position;
 	
+	worldTransformBody_.scale_ = {1.5f, 1.5f, 1.5};
+
 	worldTransformBody_.Initialize();
 	worldTransformL_arm_.Initialize();
 	worldTransformR_arm_.Initialize();
@@ -53,8 +55,8 @@ void Enemy::Draw(const ViewProjection& viewProjection) {
 	if (isDead_ == false) {
 		// 3Dモデル描画
 		models_[0]->Draw(worldTransformBody_, viewProjection);
-		models_[1]->Draw(worldTransformL_arm_, viewProjection);
-		models_[2]->Draw(worldTransformR_arm_, viewProjection);
+		//models_[1]->Draw(worldTransformL_arm_, viewProjection);
+		//models_[2]->Draw(worldTransformR_arm_, viewProjection);
 	}
 }
 
