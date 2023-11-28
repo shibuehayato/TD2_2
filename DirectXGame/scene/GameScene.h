@@ -177,6 +177,15 @@ private: // メンバ変数
 	// タイムリミット
 	std::unique_ptr<TimeLimit> TimeLimit_;
 
+	// サウンドデータハンドル
+	uint32_t bgmDataHandle_ = 0;
+	uint32_t clearSoundDataHandle_ = 0;
+	uint32_t gameOverSoundDataHandle_ = 0;
+
+	uint32_t voiceHandle_ = 0;
+	uint32_t voiceHandle2_ = 0;
+	uint32_t voiceHandle3_ = 0;
+
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
