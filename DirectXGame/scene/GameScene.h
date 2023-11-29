@@ -20,8 +20,10 @@
 #include"OverheadCamera.h"
 
 #include"ImGuiManager.h"
-#include"UI.h"
+#include <sstream>
+#include "TimeLimit.h"
 
+#include"UI.h"
 /// <summary>
 /// ゲームシーン
 /// </summary>
@@ -53,6 +55,18 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
+    // 衝突判定と応答
+	void CheckAllCollisions();
+
+	// 敵発生
+	void EnemyPop(Vector3 pos);
+
+	// 敵発生データの読み込み
+	void LoadEnemyPopData();
+
+	// 敵発生コマンドの更新
+	void UpdateEnemyCommands();
+
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
@@ -76,11 +90,13 @@ private: // メンバ変数
 	std::unique_ptr<Model> modelFighterR_arm_;
 
 	// 敵キャラ
-	std::unique_ptr<Enemy> enemy_;
+	//Enemy* enemy_ = nullptr;
 	// 3Dモデルの生成
 	std::unique_ptr<Model> modelEnemyBody_;
 	std::unique_ptr<Model> modelEnemyL_arm;
 	std::unique_ptr<Model> modelEnemyR_arm;
+
+	std::list<std::unique_ptr<Enemy>> enemies_;
 
 	// 天球
 	std::unique_ptr<Skydome> skydome_;
@@ -117,6 +133,60 @@ private: // メンバ変数
 
 	// ゲームパッドの状態を得る変数
 	XINPUT_STATE joyState;
+	XINPUT_STATE prevjoyState;
+
+	// 敵発生コマンド
+	std::stringstream enemyPopCommands;
+
+	// 待機中フラグ
+	bool isWaiting_;
+	// 待機タイマー
+	int32_t waitTimer_;
+
+	// シーン切り替え
+	enum Scene { TITLE, OPERATION, GAME, CLEAR, GAMEOVER };
+	Scene scene = TITLE;
+	// テクスチャハンドル
+	uint32_t TitleTexture_ = 0;
+	uint32_t OperationTexture_ = 0;
+	uint32_t ClearTexture_ = 0;
+	uint32_t GameoverTexture_ = 0;
+	// シーン画面のスプライト
+	std::unique_ptr<Sprite> TitleSprite_ = nullptr;
+	std::unique_ptr<Sprite> OperationSprite_ = nullptr;
+	std::unique_ptr<Sprite> ClearSprite_ = nullptr;
+	std::unique_ptr<Sprite> GameoverSprite_ = nullptr;
+
+	// タワーHpテクスチャハンドル
+	uint32_t TowerHp5Texture_ = 0;
+	uint32_t TowerHp4Texture_ = 0;
+	uint32_t TowerHp3Texture_ = 0;
+	uint32_t TowerHp2Texture_ = 0;
+	uint32_t TowerHp1Texture_ = 0;
+	// タワーHpのスプライト
+	std::unique_ptr<Sprite> TowerHp5Sprite_ = nullptr;
+	std::unique_ptr<Sprite> TowerHp4Sprite_ = nullptr;
+	std::unique_ptr<Sprite> TowerHp3Sprite_ = nullptr;
+	std::unique_ptr<Sprite> TowerHp2Sprite_ = nullptr;
+	std::unique_ptr<Sprite> TowerHp1Sprite_ = nullptr;
+
+	// クリアまでのタイマー
+	int ClearTimer_ = 60*60;
+
+	// タワーhp
+	int TowerHp_ = 5;
+
+	// タイムリミット
+	std::unique_ptr<TimeLimit> TimeLimit_;
+
+	// サウンドデータハンドル
+	uint32_t bgmDataHandle_ = 0;
+	uint32_t clearSoundDataHandle_ = 0;
+	uint32_t gameOverSoundDataHandle_ = 0;
+
+	uint32_t voiceHandle_ = 0;
+	uint32_t voiceHandle2_ = 0;
+	uint32_t voiceHandle3_ = 0;
 
 	/// <summary>
 	/// ゲームシーン用

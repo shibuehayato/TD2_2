@@ -34,14 +34,21 @@ void Player::Initialize(const std::vector<Model*>& models) {
 	
 	InitializeFloatingGimmick();
 
-	model_ = Model::Create();
+	
 
 	beam_ = std::make_unique<Beam>();
-	beam_->Initialize(model_,worldTransformBody_.translation_);
+	modelbeam_ = Model::Create();
+	beam_->Initialize(modelbeam_,worldTransformBody_.translation_);
 
-	wall_ = std::make_unique<Wall>();
+	//wall_ = std::make_unique<Wall>();
+	//
+	//modelwall_ = Model::Create();
+
+	//wall_->Initialize(modelwall_);
+	beam_->Initialize(modelbeam_,worldTransformBody_.translation_);
 	
 	
+	modelBullet_ = Model::CreateFromOBJ("bullet",true);
 
 	wall_->Initialize(model_);
 
@@ -51,20 +58,24 @@ void Player::Initialize(const std::vector<Model*>& models) {
 }
 
 void Player::Update() { 
-	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A&&durationAlive==false) {
+	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_Y&&durationAlive_==false) {
 		
-		durationAlive = true;
+		durationAlive_ = true;
 	}
-	if (durationAlive) {
+	if (durationAlive_||duration>=1) {
 		duration++;
 	}
+	if (duration >=100)
+	{
+		durationAlive_ = false;
+	}
 	if (duration >= 200) {
-		durationAlive = false;
+		
 		duration = 0;
 		
 	} 
 
-	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_X &&wallAlive_ == false)
+	/*if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_X &&wallAlive_ == false)
 	{
 		wallAlive_ = true;
 	}
@@ -77,7 +88,7 @@ void Player::Update() {
 	{
 		wallAlive_ = false;
 		wallcolltimer_ = 0;
-	}
+	}*/
 	
 	
 	// ゲームパッドが有効の場合if文が通る
@@ -112,7 +123,7 @@ void Player::Update() {
 			worldTransformR_arm_.rotation_.y = std::atan2(move.x, move.z);
 		
 			beam_->Update(move);
-		    wall_->Update(move,worldTransformBody_.translation_);
+		    //wall_->Update(move,worldTransformBody_.translation_);
 
 		// 座標移動
 		worldTransformHead_.translation_ = Add(worldTransformHead_.translation_, move);
@@ -169,10 +180,10 @@ void Player::Draw(const ViewProjection& viewProjection) {
 		beam_->Draw(viewProjection);
 	}
 
-	if (wallcolltimer_>=1&&wallcolltimer_<=280)
+	/*if (wallcolltimer_>=1&&wallcolltimer_<=280)
 	{
 		wall_->Draw(viewProjection);
-	}
+	}*/
 
 }
 
@@ -212,13 +223,13 @@ void Player::UpdateFloatingGimmick() {
 	worldTransformL_arm_.rotation_.x = std::sin(floatingParameter_) * range_;
 	worldTransformR_arm_.rotation_.x = std::sin(floatingParameter_) * range_;
 
-	ImGui::Begin("Player");
-	ImGui::SliderFloat3("Head Translation", head_, 0.0f, 5.0f);
-	ImGui::SliderFloat3("Body Translation", body_, 0.0f, 5.0f);
-	ImGui::SliderFloat3("ArmL Translation", l_arm, -5.0f, 5.0f);
-	ImGui::SliderFloat3("ArmR Translation", r_arm, -5.0f, 5.0f);
-	ImGui::SliderFloat("range", &range_, 0.0f, 5.0f);
-	ImGui::End();
+	//ImGui::Begin("Player");
+	//ImGui::SliderFloat3("Head Translation", head_, 0.0f, 5.0f);
+	//ImGui::SliderFloat3("Body Translation", body_, 0.0f, 5.0f);
+	//ImGui::SliderFloat3("ArmL Translation", l_arm, -5.0f, 5.0f);
+	//ImGui::SliderFloat3("ArmR Translation", r_arm, -5.0f, 5.0f);
+	//ImGui::SliderFloat("range", &range_, 0.0f, 5.0f);
+	//ImGui::End();
 
 }
 
@@ -234,11 +245,15 @@ void Player::Attack() {
 
 		velocity = TransformNormal(velocity, worldTransformHead_.matWorld_);
 
-		newplayerbullet_->Initialize(model_,worldTransformHead_.translation_,velocity);
+		newplayerbullet_->Initialize(modelBullet_,worldTransformHead_.translation_,velocity);
 
 		playerbullets_.push_back(newplayerbullet_);
 		cooltimer_ = 0;
 	}
-	
 
 }
+
+
+
+void Player::OnCollision()
+{ isDead_ = true; }

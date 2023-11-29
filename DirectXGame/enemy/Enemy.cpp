@@ -4,14 +4,19 @@
 #include"Player.h"
 #include <cmath>
 
-void Enemy::Initialize(const std::vector<Model*>& models) 
-{
+void Enemy::Initialize(const std::vector<Model*>& models, const Vector3& position) {
 	// 基底クラスの初期化
 	BaseCharacter::Initialize(models);
 
-	worldTransformBody_.translation_ = {37.0f, -0.5f, 35};
+	/*worldTransformBody_.translation_ = {37.0f, -0.5f, 35};
 	worldTransformL_arm_.translation_ = {36.1f,0.6f,35};
-	worldTransformR_arm_.translation_ = {37.9f, 0.6f, 35};
+	worldTransformR_arm_.translation_ = {37.9f, 0.6f, 35};*/
+
+	worldTransformBody_.translation_ = position;
+	worldTransformL_arm_.translation_ = position;
+	worldTransformR_arm_.translation_ = position;
+	
+	worldTransformBody_.scale_ = {1.5f, 1.5f, 1.5};
 
 	worldTransformBody_.Initialize();
 	worldTransformL_arm_.Initialize();
@@ -47,16 +52,20 @@ void Enemy::Update()
 	worldTransformL_arm_.translation_ = Add(worldTransformL_arm_.translation_, velocity);
 	worldTransformR_arm_.translation_ = Add(worldTransformR_arm_.translation_, velocity);
 
+
+
 	worldTransformBody_.UpdateMatrix();
 	worldTransformL_arm_.UpdateMatrix();
 	worldTransformR_arm_.UpdateMatrix();
 }
 
 void Enemy::Draw(const ViewProjection& viewProjection) {
-	// 3Dモデル描画
-	models_[0]->Draw(worldTransformBody_, viewProjection);
-	models_[1]->Draw(worldTransformL_arm_, viewProjection);
-	models_[2]->Draw(worldTransformR_arm_, viewProjection);
+	if (isDead_ == false) {
+		// 3Dモデル描画
+		models_[0]->Draw(worldTransformBody_, viewProjection);
+		//models_[1]->Draw(worldTransformL_arm_, viewProjection);
+		//models_[2]->Draw(worldTransformR_arm_, viewProjection);
+	}
 }
 
 Vector3 Enemy::GetWorldPosition() 
@@ -69,4 +78,20 @@ Vector3 Enemy::GetWorldPosition()
 	worldPos.z = worldTransformBody_.matWorld_.m[3][2];
 
 	return worldPos;
+	
 }
+
+Vector3 Enemy::GetWorldRadius() { 
+	Vector3 worldRadius;
+
+	worldRadius.x = worldTransform_.scale_.x;
+	worldRadius.y = worldTransform_.scale_.y;
+	worldRadius.z = worldTransform_.scale_.z;
+	return worldRadius;
+}
+
+void Enemy::OnCollision() { isDead_ = true; }
+
+void Enemy::SpeedOnCollision() { enemySpeed = 0.0f; }
+
+void Enemy::SpeedNoCollision() { enemySpeed = 0.1f; }

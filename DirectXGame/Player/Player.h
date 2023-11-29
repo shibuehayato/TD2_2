@@ -9,9 +9,8 @@
 #include<list>
 #include"Speed.h"
 
-class Player : public BaseCharacter{
+class Player : public BaseCharacter {
 public:
-
 	~Player();
 
 	void Initialize(const std::vector<Model*>& models) override;
@@ -24,8 +23,7 @@ public:
 
 	const WorldTransform& GetWorldTransform() { return worldTransformBody_; }
 
-	void SetViewProjection(const ViewProjection* viewProjection)
-	{
+	void SetViewProjection(const ViewProjection* viewProjection) {
 		viewProjection_ = viewProjection;
 	}
 
@@ -37,6 +35,23 @@ public:
 	void InitializeFloatingGimmick();
 	// 浮遊ギミック更新
 	void UpdateFloatingGimmick();
+
+	// ワールド座標を取得
+	Vector3 GetWorldPosition();
+
+	// 衝突を検出したら呼び出されるコールバック関数
+	void OnCollision();
+
+	// 弾リストを取得
+	const std::list<PlayerBullet*>& GetBullets() const { return playerbullets_; }
+
+	// ビームを取得
+	const std::unique_ptr<Beam>& GetBeam() const { return beam_; }
+
+	bool const IsdurationAlive() { return durationAlive_; }
+
+	// 壁を取得
+	const std::unique_ptr<Wall>& GetWall() const { return wall_; }
 
 private:
 	// ワールド変換データ
@@ -62,23 +77,26 @@ private:
 	float l_arm[3] = {-0.6f, 1.5f, 0};
 	float r_arm[3] = {0.6f, 1.5f, 0};
 
-	Model* model_ = nullptr;
+	Model* modelBullet_ = nullptr;
 
-	//std::unique_ptr<PlayerBullet> playerbullet_;
+	// std::unique_ptr<PlayerBullet> playerbullet_;
 	PlayerBullet* playerbullet_ = nullptr;
 	std::list<PlayerBullet*> playerbullets_;
 
 	// ゲームパッドの状態を得る変数
 	XINPUT_STATE joyState;
 
-	//弾のクールタイム
+	// 弾のクールタイム
 	int32_t cooltimer_;
 
+	// デスフラグ
+	bool isDead_ = false;
+
 	std::unique_ptr<Beam> beam_;
+	Model* modelbeam_ = nullptr;
+	int32_t duration = 0;
 
-	int32_t duration=0;
-
-	bool durationAlive = false;
+	bool durationAlive_ = false;
 
 	std::unique_ptr<Wall> wall_;
 
@@ -88,5 +106,7 @@ private:
 	std::unique_ptr<Speed> speed_;
 	bool isspeed_ = false;
 	
+	
+	Model* modelwall_ = nullptr;
 
 };

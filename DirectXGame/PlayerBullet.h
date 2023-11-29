@@ -15,6 +15,12 @@ public:
 
 	static const int32_t kLifeTime = 60 * 5;
 
+	// ワールド座標を取得
+	Vector3 GetWorldPosition();
+
+	// 衝突を検出したら呼び出されるコールバック関数
+	void OnCollision();
+
 	private:
 	WorldTransform worldTransform_;
 
