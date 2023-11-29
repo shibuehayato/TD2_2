@@ -589,7 +589,7 @@ void GameScene::LoadEnemyPopData() {
 
 	int i = 0;
 
-	while (i < 10) {
+	while (i < 2) {
 
 		// ファイルを開く
 		std::ifstream file;
@@ -599,7 +599,7 @@ void GameScene::LoadEnemyPopData() {
 		// ファイルの内容を文字列ストリームにコピー
 		enemyPopCommands << file.rdbuf();
 		file.close();
-		if (i == 10) {
+		if (i >= 2) {
 			  i = 0;
 		}
 		i++;
