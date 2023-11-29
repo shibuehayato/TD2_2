@@ -5,6 +5,7 @@ void OverheadCamera::Initialize() { viewProjection_.Initialize();
 	viewProjection_.translation_ = {0.0f, 50.0f, -20.0f};
 	viewProjection_.rotation_ = {-29.0f, 0.0f, 0.0f};
 	input_ = Input::GetInstance();
+	cooltimer_ = 0;
 }
 
 
@@ -48,7 +49,6 @@ void OverheadCamera::Update() { viewProjection_.matView = Inverse(worldTransform
 		}
 	}
 
-	
 	
 	
 

@@ -240,9 +240,10 @@ void GameScene::Update() {
 	//UIの更新
 	ui_->Update();
 	
-	overheadCamera_->Update();
+
 
 		if (Input::GetInstance()->GetJoystickState(0, joyState) && cameracooltime_ >= 10) {
+
 			if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_THUMB) {
 				isOverheadCameraActive_ = true;
 			}
