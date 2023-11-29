@@ -13,7 +13,7 @@ void Speed::Update() {
 	
 	// ゲームパッドが有効の場合if文が通る
 	if (Input::GetInstance()->GetJoystickState(0, joyState)) {
-		if (cooltime_ <= 0 && joyState.Gamepad.wButtons & XINPUT_GAMEPAD_Y) {
+		if (cooltime_ <= 0 && joyState.Gamepad.wButtons & XINPUT_GAMEPAD_X) {
 			istime_ = true;
 			cooltime_ = Time;
 		}
