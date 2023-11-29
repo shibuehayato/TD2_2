@@ -1,7 +1,7 @@
 ﻿#include "TimeLimit.h"
 #include <TextureManager.h>
 
-void TimeLimit::Initialize() 
+void TimeLimit::Initialize()
 { 
 	TimeTexture_[0] = TextureManager::Load("time/Time60.png");
 	TimeTexture_[1] = TextureManager::Load("time/Time50.png");
