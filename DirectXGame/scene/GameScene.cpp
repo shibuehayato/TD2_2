@@ -158,6 +158,8 @@ void GameScene::Initialize() {
 	cameracooltime_ = 10;
 
 	LoadEnemyPopData();
+
+	
 }
 
 void GameScene::Update() {
@@ -233,8 +235,7 @@ void GameScene::Update() {
 		TimeLimit_->Update();
 
 		overheadCamera_->Update();
-	//タワーの更新
-	tower_->Update();
+
 
 	//UIの更新
 	ui_->Update();
@@ -431,9 +432,10 @@ void GameScene::Draw() {
 		}
 
 		TimeLimit_->Draw();
+		ui_->Draw();
 	}
 
-	ui_->Draw();
+
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
@@ -575,6 +577,7 @@ void GameScene::EnemyPop(Vector3 pos)
 	enemy->SetGameScene(this);
 	// 敵キャラにタワーのアドレスを渡す
 	enemy->SetTower(tower_.get());
+	enemy->SetPlayer(player_.get());
 	enemies_.push_back(static_cast<std::unique_ptr<Enemy>>(enemy));
 }
 

@@ -26,8 +26,7 @@ void Enemy::Initialize(const std::vector<Model*>& models, const Vector3& positio
 
 void Enemy::Update() 
 { 
-	// 敵の速度
-	float enemySpeed = 0.1f;
+	
 	if (player_->IsSpeed())
 	{
 		enemySpeed = 0.01f;

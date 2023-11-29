@@ -54,4 +54,6 @@ private:
 
 	// 敵の速度
 	float enemySpeed = 0.1f;
+
+	Player* player_ = nullptr;
 };

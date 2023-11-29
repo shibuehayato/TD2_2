@@ -50,7 +50,7 @@ void Player::Initialize(const std::vector<Model*>& models) {
 	
 	modelBullet_ = Model::CreateFromOBJ("bullet",true);
 
-	wall_->Initialize(model_);
+	
 
 	speed_ = std::make_unique<Speed>();
 	speed_->Initialize();
