@@ -88,6 +88,7 @@ private: // メンバ変数
 	std::unique_ptr<Model> modelFighterBody_;
 	std::unique_ptr<Model> modelFighterL_arm_;
 	std::unique_ptr<Model> modelFighterR_arm_;
+	std::unique_ptr<Model> modelFighterMouth_;
 
 	// 敵キャラ
 	//Enemy* enemy_ = nullptr;
