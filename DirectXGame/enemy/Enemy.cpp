@@ -24,8 +24,8 @@ void Enemy::Initialize(const std::vector<Model*>& models, const Vector3& positio
 
 void Enemy::Update() 
 { 
-	// 敵の速度
-	float enemySpeed = 0.1f;
+	
+	
 	Vector3 velocity(0, 0, enemySpeed);
 
 	Vector3 towerPosition = tower_->GetWorldPosition();
@@ -70,7 +70,20 @@ Vector3 Enemy::GetWorldPosition()
 	worldPos.z = worldTransformBody_.matWorld_.m[3][2];
 
 	return worldPos;
+	
 }
 
-void Enemy::OnCollision()
-{ isDead_ = true; }
+Vector3 Enemy::GetWorldRadius() { 
+	Vector3 worldRadius;
+
+	worldRadius.x = worldTransform_.scale_.x;
+	worldRadius.y = worldTransform_.scale_.y;
+	worldRadius.z = worldTransform_.scale_.z;
+	return worldRadius;
+}
+
+void Enemy::OnCollision() { isDead_ = true; }
+
+void Enemy::SpeedOnCollision() { enemySpeed = 0.0f; }
+
+void Enemy::SpeedNoCollision() { enemySpeed = 0.1f; }

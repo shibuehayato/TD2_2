@@ -364,3 +364,11 @@ Matrix4x4 Inverse(Matrix4x4& m) {
 	                 determinantRecp;
 	return result;
 }
+
+float Length(const Vector3& v) {
+	
+		float length = sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+		return length;
+	
+}
+

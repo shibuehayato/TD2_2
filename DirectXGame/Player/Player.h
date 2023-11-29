@@ -5,6 +5,7 @@
 #include "BaseCharacter.h"
 #include"PlayerBullet.h"
 #include"Beam.h"
+#include"Wall.h"
 #include<list>
 
 class Player : public BaseCharacter {
@@ -25,6 +26,8 @@ public:
 		viewProjection_ = viewProjection;
 	}
 
+
+
 	// 浮遊ギミック初期化
 	void InitializeFloatingGimmick();
 	// 浮遊ギミック更新
@@ -38,6 +41,14 @@ public:
 
 	// 弾リストを取得
 	const std::list<PlayerBullet*>& GetBullets() const { return playerbullets_; }
+
+	// ビームを取得
+	const std::unique_ptr<Beam>& GetBeam() const { return beam_; }
+
+	bool const IsdurationAlive() { return durationAlive_; }
+
+	// 壁を取得
+	const std::unique_ptr<Wall>& GetWall() const { return wall_; }
 
 private:
 	// ワールド変換データ
@@ -79,10 +90,16 @@ private:
 	bool isDead_ = false;
 
 	std::unique_ptr<Beam> beam_;
-
+	Model* modelbeam_ = nullptr;
 	int32_t duration = 0;
 
-	bool durationAlive = false;
+	bool durationAlive_ = false;
 
-	Model* modelbeam_ = nullptr;
+	std::unique_ptr<Wall> wall_;
+
+	int32_t wallcolltimer_;
+	bool wallAlive_ = false;
+	
+	Model* modelwall_ = nullptr;
+
 };

@@ -38,27 +38,54 @@ void Player::Initialize(const std::vector<Model*>& models) {
 
 	beam_ = std::make_unique<Beam>();
 	beam_->Initialize(modelbeam_,worldTransformBody_.translation_);
+
+	//wall_ = std::make_unique<Wall>();
+	//
+	//modelwall_ = Model::Create();
+
+	//wall_->Initialize(modelwall_);
+	beam_->Initialize(modelbeam_,worldTransformBody_.translation_);
 	
 	
 	modelBullet_ = Model::CreateFromOBJ("bullet",true);
 }
 
 void Player::Update() { 
-	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A&&durationAlive==false) {
+	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_Y&&durationAlive_==false) {
 		
-		durationAlive = true;
+		durationAlive_ = true;
 	}
-	if (durationAlive) {
+	if (durationAlive_||duration>=1) {
 		duration++;
 	}
+	if (duration >=100)
+	{
+		durationAlive_ = false;
+	}
 	if (duration >= 200) {
-		durationAlive = false;
+		
 		duration = 0;
 		
 	} 
 
+	/*if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_X &&wallAlive_ == false)
+	{
+		wallAlive_ = true;
+	}
+	
+	if (wallAlive_)
+	{
+		wallcolltimer_++;
+	}
+	if (wallcolltimer_ >= 300)
+	{
+		wallAlive_ = false;
+		wallcolltimer_ = 0;
+	}*/
+	
 	// ゲームパッドが有効の場合if文が通る
 	if (Input::GetInstance()->GetJoystickState(0, joyState)) {
+	
 		// 速さ
 		const float speed = 0.3f;
 
@@ -81,6 +108,7 @@ void Player::Update() {
 			worldTransformR_arm_.rotation_.y = std::atan2(move.x, move.z);
 		
 			beam_->Update(move);
+		    //wall_->Update(move,worldTransformBody_.translation_);
 
 		// 座標移動
 		worldTransformHead_.translation_ = Add(worldTransformHead_.translation_, move);
@@ -90,6 +118,8 @@ void Player::Update() {
 
 	
 	} 
+
+	   
 
 	UpdateFloatingGimmick();
 
@@ -113,8 +143,8 @@ void Player::Update() {
 		return false;
 		});
 
-
-
+	
+	
 
 
 }
@@ -135,10 +165,23 @@ void Player::Draw(const ViewProjection& viewProjection) {
 		beam_->Draw(viewProjection);
 	}
 
+	/*if (wallcolltimer_>=1&&wallcolltimer_<=280)
+	{
+		wall_->Draw(viewProjection);
+	}*/
+
 }
 
 
 
+
+Vector3 Player::GetWorldPosition() { 
+	Vector3 worldPos;
+	worldPos.x = worldTransformHead_.matWorld_.m[3][0];
+	worldPos.y = worldTransformHead_.matWorld_.m[3][1];
+	worldPos.z = worldTransformHead_.matWorld_.m[3][2];
+	return worldPos; 
+}
 
 void Player::InitializeFloatingGimmick() { 
 	floatingParameter_ = 0.0f;
@@ -195,17 +238,7 @@ void Player::Attack() {
 
 }
 
-Vector3 Player::GetWorldPosition()
-{
-	// ワールド座標を入れる変数
-	Vector3 worldPos;
-	// ワールド行列の平行移動成分を取得 (ワールド座標)
-	worldPos.x = worldTransformBody_.matWorld_.m[3][0];
-	worldPos.y = worldTransformBody_.matWorld_.m[3][1];
-	worldPos.z = worldTransformBody_.matWorld_.m[3][2];
 
-	return worldPos;
-}
 
 void Player::OnCollision()
 { isDead_ = true; }

@@ -124,6 +124,7 @@
     <ClCompile Include="skydome\Skydome.cpp" />
     <ClCompile Include="TimeLimit.cpp" />
     <ClCompile Include="Tower.cpp" />
+    <ClCompile Include="Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2d\ImGuiManager.h" />
@@ -166,6 +167,7 @@
     <ClInclude Include="skydome\Skydome.h" />
     <ClInclude Include="TimeLimit.h" />
     <ClInclude Include="Tower.h" />
+    <ClInclude Include="Wall.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\TerrainPS.hlsl">
