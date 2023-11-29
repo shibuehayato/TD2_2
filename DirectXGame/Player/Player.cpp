@@ -34,9 +34,10 @@ void Player::Initialize(const std::vector<Model*>& models) {
 	
 	InitializeFloatingGimmick();
 
-	modelbeam_ = Model::Create();
+	
 
 	beam_ = std::make_unique<Beam>();
+	modelbeam_ = Model::Create();
 	beam_->Initialize(modelbeam_,worldTransformBody_.translation_);
 
 	//wall_ = std::make_unique<Wall>();
