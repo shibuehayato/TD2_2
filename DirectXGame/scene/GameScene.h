@@ -67,6 +67,8 @@ public: // メンバ関数
 	// 敵発生コマンドの更新
 	void UpdateEnemyCommands();
 
+	void Reset();
+
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;

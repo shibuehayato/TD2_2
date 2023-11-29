@@ -183,6 +183,7 @@ void GameScene::Update() {
 				if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A &&
 				    !(prevjoyState.Gamepad.wButtons & XINPUT_GAMEPAD_A)) {
 					scene = GAME;
+					Reset();
 				}
 			}
 		}
@@ -669,4 +670,16 @@ void GameScene::UpdateEnemyCommands()
 			break;
 		  }
 	}
+}
+
+void GameScene::Reset() {
+	// 自キャラモデル
+	std::vector<Model*> playerModels = {
+	    modelFighterBody_.get(), modelFighterHead_.get(), modelFighterL_arm_.get(),
+	    modelFighterR_arm_.get(), modelFighterMouth_.get()};
+	// 自キャラの初期化
+	player_->Initialize(playerModels);
+
+	LoadEnemyPopData(); 
+
 }
