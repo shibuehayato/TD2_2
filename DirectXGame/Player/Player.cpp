@@ -23,17 +23,20 @@ void Player::Initialize(const std::vector<Model*>& models) {
 	worldTransformR_arm_.translation_ = {0.0f, 0.0, 0};
 	worldTransform_.translation_ = {0.0f, 0.0f, 4.0f};
 	worldTransform_.rotation_ = {-0.5f, 0.0f, 0.0f};
+	worldTransformMouth_.translation_ = {0.0f, 0.0f, 5.0f};
 
 	worldTransformL_arm_.parent_ = &worldTransformBody_;
 	worldTransformR_arm_.parent_ = &worldTransformBody_;
 	worldTransform_.parent_ = &worldTransformBody_;
 	worldTransformHead_.parent_ = &worldTransformBody_;
+	worldTransformMouth_.parent_ = &worldTransformBody_;
 
 	worldTransformHead_.Initialize();
 	worldTransformBody_.Initialize();
 	worldTransformL_arm_.Initialize();
 	worldTransformR_arm_.Initialize();
 	worldTransform_.Initialize();
+	worldTransformMouth_.Initialize();
 	
 	// シングルトンインスタンスを取得
 	input_ = Input::GetInstance();
@@ -43,7 +46,7 @@ void Player::Initialize(const std::vector<Model*>& models) {
 	
 
 	beam_ = std::make_unique<Beam>();
-	modelbeam_ = Model::Create();
+	modelbeam_ = Model::CreateFromOBJ("Beam",true);
 	beam_->Initialize(modelbeam_,worldTransformBody_.translation_);
 
 	//wall_ = std::make_unique<Wall>();
@@ -51,7 +54,7 @@ void Player::Initialize(const std::vector<Model*>& models) {
 	//modelwall_ = Model::Create();
 
 	//wall_->Initialize(modelwall_);
-	beam_->Initialize(modelbeam_,worldTransformBody_.translation_);
+	
 	
 	
 	modelBullet_ = Model::CreateFromOBJ("bullet",true);
@@ -129,6 +132,8 @@ void Player::Update() {
 			worldTransformR_arm_.rotation_.y = std::atan2(move.x, move.z);*/
 		  /*  worldTransform_.rotation_.y = std::atan2(move.x, move.z);*/
 		
+
+		
 			beam_->Update(move);
 		    //wall_->Update(move,worldTransformBody_.translation_);
 
@@ -139,17 +144,19 @@ void Player::Update() {
 	/*	worldTransformR_arm_.translation_ = Add(worldTransformR_arm_.translation_, move);*/
 		/*worldTransform_.translation_ = Add(worldTransformR_arm_.translation_, move);*/
 	
+		
 	} 
 
 	   
 
 	//UpdateFloatingGimmick();
 
+	  worldTransformBody_.UpdateMatrix();
 	worldTransformHead_.UpdateMatrix(); 
-    worldTransformBody_.UpdateMatrix();
 	worldTransformL_arm_.UpdateMatrix();
 	worldTransformR_arm_.UpdateMatrix();
 	worldTransform_.UpdateMatrix();
+	worldTransformMouth_.UpdateMatrix();
 
 	Attack();
 

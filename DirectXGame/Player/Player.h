@@ -59,6 +59,7 @@ private:
 	WorldTransform worldTransformL_arm_;
 	WorldTransform worldTransformR_arm_;
 	WorldTransform worldTransform_;
+	WorldTransform worldTransformMouth_;
 
 	// キーボード入力
 	Input* input_ = nullptr;
