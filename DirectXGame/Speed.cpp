@@ -18,7 +18,7 @@ void Speed::Update() {
 			cooltime_ = Time;
 		}
 		
-		if (cooltime_ <=100)
+		if (cooltime_ <=600)
 		{
 			istime_ = false;
 		}

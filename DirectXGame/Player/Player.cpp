@@ -17,20 +17,28 @@ void Player::Initialize(const std::vector<Model*>& models) {
 	// 基底クラスの初期化
 	BaseCharacter::Initialize(models);
 
-	worldTransformHead_.translation_ = {0, 1, 0};
-	worldTransformBody_.translation_ = {0, 0, 0};
-	worldTransformL_arm_.translation_ = {-0.5f, 1.5, 0};
-	worldTransformR_arm_.translation_ = {0.5, 1.5, 0};
-	
+	worldTransformHead_.translation_ = {0.0f, 0.1f, 0.0f};
+	worldTransformBody_.translation_ = {0.0f, 1.0f, 0.0f};
+	worldTransformL_arm_.translation_ = {0.0f, 0.0, 0};
+	worldTransformR_arm_.translation_ = {0.0f, 0.0, 0};
+	worldTransform_.translation_ = {0.0f, 0.0f, 4.0f};
+	worldTransform_.rotation_ = {-0.5f, 0.0f, 0.0f};
+
+	worldTransformL_arm_.parent_ = &worldTransformBody_;
+	worldTransformR_arm_.parent_ = &worldTransformBody_;
+	worldTransform_.parent_ = &worldTransformBody_;
+	worldTransformHead_.parent_ = &worldTransformBody_;
+
 	worldTransformHead_.Initialize();
 	worldTransformBody_.Initialize();
 	worldTransformL_arm_.Initialize();
 	worldTransformR_arm_.Initialize();
+	worldTransform_.Initialize();
 	
 	// シングルトンインスタンスを取得
 	input_ = Input::GetInstance();
 	
-	InitializeFloatingGimmick();
+	//InitializeFloatingGimmick();
 
 	
 
@@ -67,7 +75,7 @@ void Player::Update() {
 	{
 		durationAlive_ = false;
 	}
-	if (duration >= 200) {
+	if (duration >= 340) {
 		
 		duration = 0;
 		
@@ -115,31 +123,33 @@ void Player::Update() {
 		move = TransformNormal(move, RotationMatrix);
 		
 
-			worldTransformHead_.rotation_.y = std::atan2(move.x, move.z);
+			/*worldTransformHead_.rotation_.y = std::atan2(move.x, move.z);*/
 			worldTransformBody_.rotation_.y = std::atan2(move.x, move.z);
-			worldTransformL_arm_.rotation_.y = std::atan2(move.x, move.z);
-			worldTransformR_arm_.rotation_.y = std::atan2(move.x, move.z);
+		/*	worldTransformL_arm_.rotation_.y = std::atan2(move.x, move.z);
+			worldTransformR_arm_.rotation_.y = std::atan2(move.x, move.z);*/
+		  /*  worldTransform_.rotation_.y = std::atan2(move.x, move.z);*/
 		
 			beam_->Update(move);
 		    //wall_->Update(move,worldTransformBody_.translation_);
 
 		// 座標移動
-		worldTransformHead_.translation_ = Add(worldTransformHead_.translation_, move);
+	/*	worldTransformHead_.translation_ = Add(worldTransformHead_.translation_, move);*/
 		worldTransformBody_.translation_ = Add(worldTransformBody_.translation_, move);
-		worldTransformL_arm_.translation_ = Add(worldTransformL_arm_.translation_, move);
-		worldTransformR_arm_.translation_ = Add(worldTransformR_arm_.translation_, move);
-
+		/*worldTransformL_arm_.translation_ = Add(worldTransformL_arm_.translation_, move);*/
+	/*	worldTransformR_arm_.translation_ = Add(worldTransformR_arm_.translation_, move);*/
+		/*worldTransform_.translation_ = Add(worldTransformR_arm_.translation_, move);*/
 	
 	} 
 
 	   
 
-	UpdateFloatingGimmick();
+	//UpdateFloatingGimmick();
 
 	worldTransformHead_.UpdateMatrix(); 
     worldTransformBody_.UpdateMatrix();
 	worldTransformL_arm_.UpdateMatrix();
 	worldTransformR_arm_.UpdateMatrix();
+	worldTransform_.UpdateMatrix();
 
 	Attack();
 
@@ -158,7 +168,7 @@ void Player::Update() {
 
 	speed_->Update();
 	
-
+	
 
 }
 
@@ -168,6 +178,7 @@ void Player::Draw(const ViewProjection& viewProjection) {
 	models_[1]->Draw(worldTransformHead_, viewProjection);
 	models_[2]->Draw(worldTransformL_arm_, viewProjection);
 	models_[3]->Draw(worldTransformR_arm_, viewProjection);
+	models_[4]->Draw(worldTransform_, viewProjection);
 
 	for (PlayerBullet* playerbullet : playerbullets_)
 	{
@@ -241,9 +252,9 @@ void Player::Attack() {
 		const float playerbulletspeed = 1.0f;
 		Vector3 velocity = {0.0f, 0.0f, playerbulletspeed};
 
-		velocity = TransformNormal(velocity, worldTransformHead_.matWorld_);
+		velocity = TransformNormal(velocity, worldTransformBody_.matWorld_);
 
-		newplayerbullet_->Initialize(modelBullet_,worldTransformHead_.translation_,velocity);
+		newplayerbullet_->Initialize(modelBullet_,worldTransformBody_.translation_,velocity);
 
 		playerbullets_.push_back(newplayerbullet_);
 		cooltimer_ = 0;

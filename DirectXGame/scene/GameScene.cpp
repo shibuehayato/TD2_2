@@ -66,14 +66,15 @@ void GameScene::Initialize() {
 	// 自キャラの生成
 	player_ = std::make_unique<Player>();
 	// 3Dモデルの生成
-	modelFighterHead_.reset(Model::CreateFromOBJ("float_Head", true));
-	modelFighterBody_.reset(Model::CreateFromOBJ("float_Body", true));
-	modelFighterL_arm_.reset(Model::CreateFromOBJ("float_L_arm", true));
-	modelFighterR_arm_.reset(Model::CreateFromOBJ("float_R_arm", true));
+	modelFighterHead_.reset(Model::CreateFromOBJ("2", true));
+	modelFighterBody_.reset(Model::CreateFromOBJ("3", true));
+	modelFighterL_arm_.reset(Model::CreateFromOBJ("5", true));
+	modelFighterR_arm_.reset(Model::CreateFromOBJ("4", true));
+	modelFighterMouth_.reset(Model::CreateFromOBJ("1", true));
 	// 自キャラモデル
 	std::vector<Model*> playerModels = {
-	    modelFighterBody_.get(), modelFighterHead_.get(), modelFighterL_arm_.get(),
-	    modelFighterR_arm_.get()
+		modelFighterBody_.get(), modelFighterHead_.get(), modelFighterL_arm_.get(),
+		modelFighterR_arm_.get(), modelFighterMouth_.get()
 	};
 	// 自キャラの初期化
 	player_->Initialize(playerModels);

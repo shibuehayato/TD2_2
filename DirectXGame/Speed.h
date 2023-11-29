@@ -10,7 +10,7 @@ public:
 
 	bool const IsTime() { return istime_; }
 
-	static const int Time = 300;
+	static const int Time = 780;
 
 	private:
 	int32_t cooltime_;
