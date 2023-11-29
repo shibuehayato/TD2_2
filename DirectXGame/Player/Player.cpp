@@ -51,7 +51,7 @@ void Player::Initialize(const std::vector<Model*>& models) {
 }
 
 void Player::Update() { 
-	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A&&durationAlive_==false) {
+	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_Y&&durationAlive_==false) {
 		
 		durationAlive_ = true;
 	}
