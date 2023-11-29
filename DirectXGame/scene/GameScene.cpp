@@ -248,7 +248,9 @@ void GameScene::Update() {
 			}
 		}
 		if (overheadCamera_->IsCameraActive()) {
+			
 			isOverheadCameraActive_ = false;
+			
 			cameracooltimeActive_ = true;
 		}
 		if (cameracooltimeActive_) {
@@ -277,7 +279,7 @@ void GameScene::Update() {
 			viewProjection_.matView = overheadCamera_->GetViewProjection().matView;
 			viewProjection_.matProjection = overheadCamera_->GetViewProjection().matProjection;
 			viewProjection_.TransferMatrix();
-		} else {
+		} else if(isOverheadCameraActive_==false) {
 			// 追従カメラの更新
 			followCamera_->Update();
 			viewProjection_.matProjection = followCamera_->GetViewProjection().matProjection;
