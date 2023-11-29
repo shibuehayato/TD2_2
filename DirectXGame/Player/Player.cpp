@@ -9,8 +9,6 @@ Player::~Player()
 		delete playerbullet;
 	}
 
-
-
 }
 
 
