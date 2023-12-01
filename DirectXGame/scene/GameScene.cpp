@@ -148,10 +148,10 @@ void GameScene::Initialize() {
 	// 自キャラのワールドトランスフォームを追従カメラにセット
 	followCamera_->SetTarget(&player_->GetWorldTransform());
 
-	//// 軸方向表示を有効にする
-	//AxisIndicator::GetInstance()->SetVisible(true);
-	//// 軸方向表示が参照するビュープロジェクションを指定する (アドレス渡し)
-	//AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
+	// 軸方向表示を有効にする
+	AxisIndicator::GetInstance()->SetVisible(true);
+	// 軸方向表示が参照するビュープロジェクションを指定する (アドレス渡し)
+	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
 
 	overheadCamera_ = std::make_unique<OverheadCamera>();
 	overheadCamera_->Initialize();
@@ -183,7 +183,6 @@ void GameScene::Update() {
 				if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A &&
 				    !(prevjoyState.Gamepad.wButtons & XINPUT_GAMEPAD_A)) {
 					scene = GAME;
-					Reset();
 				}
 			}
 		}
@@ -600,9 +599,6 @@ void GameScene::LoadEnemyPopData() {
 		// ファイルの内容を文字列ストリームにコピー
 		enemyPopCommands << file.rdbuf();
 		file.close();
-		if (i == 10) {
-			  i = 0;
-		}
 		i++;
 	}
 }
@@ -670,16 +666,4 @@ void GameScene::UpdateEnemyCommands()
 			break;
 		  }
 	}
-}
-
-void GameScene::Reset() {
-	// 自キャラモデル
-	std::vector<Model*> playerModels = {
-	    modelFighterBody_.get(), modelFighterHead_.get(), modelFighterL_arm_.get(),
-	    modelFighterR_arm_.get(), modelFighterMouth_.get()};
-	// 自キャラの初期化
-	player_->Initialize(playerModels);
-
-	LoadEnemyPopData(); 
-
 }
